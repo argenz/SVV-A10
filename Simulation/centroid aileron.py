@@ -56,5 +56,14 @@ z_st_le_far = np.cos(2*theta_le)*(h/2)                              #z' of 2 sti
 #area times distance
 a_tot_dis = z_st_str * nst_str * 2 * a_st_one + z_st_le_close * 2 * a_st_one + z_st_le_far * 2 * a_st_one + z_le * a_le + z_sk_str * a_sk_str
 
-#finalize
-z = a_tot_dis/a_tot
+#finalize in (XYZ)' coordinates
+x_trans = 0
+y_trans = 0
+z_trans = a_tot_dis/a_tot          #z' of centroid
+
+#transform back to orginial XYZ
+x = x_trans
+y = -z_trans * np.sin(np.deg2rad(theta))
+z = z_trans * np.cos(np.deg2rad(theta))
+
+
