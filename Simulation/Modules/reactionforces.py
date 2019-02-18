@@ -39,3 +39,15 @@ def test_reactionforcesy():
     assert -margin <= - d3*E*I - (1/24)*q*x3**4 + (1/6)*(x3-x1)**3*y1 + (1/6)*(x3-x2)**3*y2 + yA*x3 + yB <= margin
     
 test_reactionforcesy()
+
+def test_reactionforcesz():
+    margin = 0.0001
+    assert -margin <= z1 + z2 + z3 + R + P <= margin
+    assert -margin <= -(x3-x2)*z3+(x2-x1)*z1+0.5*xa*(R-P)<= margin
+    assert -margin <= zA*x1+zB <= margin
+    assert -margin <= zA*x2+zB-(1/6)*(x2-x1)**3*z1-(1/6)*(0.5*xa)**3*R <= margin
+    assert -margin <= zA*x3+zB-(1/6)*(x3-x1)**3*z1-(1/6)*(x3-(x2-0.5*xa))**3*R-(1/6)*(x3-x2)**3*z2-(1/6)*(x3-(x2+0.5*xa))**3*P <= margin
+
+
+test_reactionforcesz()
+    
