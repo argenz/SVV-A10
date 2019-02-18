@@ -65,5 +65,3 @@ z_trans = a_tot_dis/a_tot          #z' of centroid
 x = x_trans
 y = -z_trans * np.sin(np.deg2rad(theta))
 z = z_trans * np.cos(np.deg2rad(theta))
-
-
