@@ -14,7 +14,7 @@ t_sp = 0.0029 #spar thikness
 
 B_coordinatesTopPanel,B_coordinatesTopArc,b_st = IdealizationCoordinates() 
 B_coordinatesTop = B_coordinatesTopPanel + B_coordinatesTopArc 
-B_coordinatesRev = B_coordinatesTop[::-1]
+B_coordinatesRev = [ [x,y*-1] for [x,y] in B_coordinatesTop[::-1]]
 B_coordinates = B_coordinatesTop + B_coordinatesRev[1:]#stiffner coordinates top half of aileron
 
 A_st = 0.0012*(0.015-0.0012) + (0.02*0.0012) #stiffner area [m]
