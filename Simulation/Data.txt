@@ -17,3 +17,5 @@ d3 = 1.642 / 100            #m   Vertical displacement hinge 3
 theta = 26                  #deg Maximum upward deflection 
 P = 91.7 * 1000             #N   Load in actuator 2 
 q = 4.53 * 1000             #N/m Net aerodynamic load
+# Looked up data
+E = 73.1E9		    #N/m E-modulus
