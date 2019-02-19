@@ -6,6 +6,7 @@ Created on Mon Feb 18 14:43:21 2019
 @author: FCRA
 """
 from math import *
+from centroid import centroid
 #from scipy.integrate import quad
 
 ################### Area Moment of Inertia Tools ###########################
@@ -21,7 +22,9 @@ exec(open("./Data.txt").read())
 a_r = sqrt((h/2)**2 + Ca**2)                #lenght of rectangle
 beta_r = acos(Ca/a_r)                       #inclination of rectangle
 d_cr = (a_r/2)*sin(beta_r)                  #distance from rectangle's centroid to the z axis
-ctrd_z = 1                                  #dummy for z-location of the centroid
+r = h/2
+
+ctrd_z = centroid()[2]                       #dummy for z-location of the centroid
 
 
 ############ AREA MOMENTS OF INERTIA IN ZZ
@@ -31,7 +34,7 @@ ctrd_z = 1                                  #dummy for z-location of the centroi
 def Izz():
     Izz_r1 = tsk*(a_r**3)*(sin(beta_r)**2)/12 + a_r*tsk*(d_cr)**2
     Izz_r2 = Izz_r1                             #because only parameters changing sign are squared so no difference 
-    r = h/2
+   
     Izz_sm = r**3*tsk*pi/2                      #no steiner because symmetry with respect to z
     
     Izz = Izz_r1 + Izz_r2 + Izz_sm

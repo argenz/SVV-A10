@@ -51,7 +51,7 @@ def centroid():
     y = -z_trans * np.sin(np.deg2rad(theta))
     z = z_trans * np.cos(np.deg2rad(theta))
     
-    return x,y,z
+    return float(x),float(y),float(z)
 
 
 
