@@ -6,7 +6,9 @@ Created on Wed Feb 13 18:42:03 2019
 """
 import numpy as np
 from Modules.reactionforces import reaction_forces
+from Modules.centroid import centroid
 
 
 exec(open("./Data.txt").read())       
-y1,y2,y3,z1,z2,z3,R = reaction_forces(1E-10)
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(1E-10)
+centroid_original_rf = centroid()
