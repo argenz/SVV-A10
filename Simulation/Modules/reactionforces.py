@@ -7,15 +7,16 @@ Created on Mon Feb 18 15:53:09 2019
 import numpy as np
 import sympy
 
+
 exec(open("./Data.txt").read())
 
 #R = (-q*la*(0.25*Ca-0.5*h)-P)/(np.cos(theta)*0.5*h)
-def reaction_forces(I):
+def reaction_forces(Izz):
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(np.deg2rad(theta)))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-np.deg2rad(theta))) - P
     X2 = 0
     y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, (1/24)*q*x2**4],
-                              [0, 0, 0, x1, 1, d1*E*I + (1/24)*q*x1**4],
-                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3*E*I + (1/24)*q*x3**4],
+                              [0, 0, 0, x1, 1, d1*E*Izz + (1/24)*q*x1**4],
+                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3*E*Izz + (1/24)*q*x3**4],
                               [x2-x1, 0, -x3+x2, 0, 0, 0.5*q*x2**2 - 0.5*q*(x3-x2)**2],
                               [1, 1, 1, 0, 0, la*q]])
     
@@ -45,9 +46,9 @@ def reaction_forces(I):
         margin = 0.0001
         assert -margin <= Y1 + Y2 + Y3 -la*q <= margin
         assert -margin <= (x2-x1)*Y1 - (x3-x2)*Y3 - 0.5*q*x2**2 + 0.5*q*(x3-x2)**2 <= margin
-        assert -margin <= - d1 * E * I - (1/24)*q*x1**4 + yA*x1+ yB <= margin
+        assert -margin <= - d1 * E * Izz - (1/24)*q*x1**4 + yA*x1+ yB <= margin
         assert -margin <= - (1/24)*q*x2**4 + (1/6)*(x2-x1)**3*Y1 + yA*x2 + yB <= margin
-        assert -margin <= - d3*E*I - (1/24)*q*x3**4 + (1/6)*(x3-x1)**3*Y1 + (1/6)*(x3-x2)**3*Y2 + yA*x3 + yB <= margin
+        assert -margin <= - d3*E*Izz - (1/24)*q*x3**4 + (1/6)*(x3-x1)**3*Y1 + (1/6)*(x3-x2)**3*Y2 + yA*x3 + yB <= margin
         
     test_reactionforcesy()
     
