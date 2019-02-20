@@ -1,9 +1,9 @@
-def deflectionpointload(P,L_force,L_total,ntotal):    
-    #internal moment for force P placed at distance L_force from hinge 2
-    #right side. L_total is total distance to end of beam. ntotal is the amount of discretizations
-
-    L_straight = L_total - L_force #length where beam will be straight
+def deflectionpointload(P,L_force,L_total,ntotal,direction):    
+    #positive load P is negative direction z   
     
+    #internal moment for force P placed at distance L_force from hinge 2
+    #right side. L_total is total distance from hinge 2 to the end of beam. ntotal is the amount of discretizations
+    #direction: to right (1), to left (-1)
     I=1 #### MOMENT OF INERTIA TO BE IMPLEMENTED
     
     dx=L_total/float(ntotal) #discretization distances
@@ -31,5 +31,6 @@ def deflectionpointload(P,L_force,L_total,ntotal):
         deflectionlist.append(deftotal) #append to list
         xcoordinateslist.append(n*dx) #append to list of x coordinates
         n=n+1 #next
-    
+        
+    xcoordinateslist=xcoordinateslist*direction
     return deflectionlist, xcoordinateslist
