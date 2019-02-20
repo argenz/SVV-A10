@@ -1,4 +1,4 @@
-def beamdeflection(P,L_force,L_total,ntotal):    
+def deflectionpointload(P,L_force,L_total,ntotal):    
     #internal moment for force P placed at distance L_force from hinge 2
     #right side. L_total is total distance to end of beam. ntotal is the amount of discretizations
 
