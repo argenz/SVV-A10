@@ -51,7 +51,7 @@ def centroid():
     y = -z_trans * np.sin(np.deg2rad(theta))
     z = z_trans * np.cos(np.deg2rad(theta))
     
-    return float(x),float(y),float(z)
+    return float(x_trans),float(y_trans),float(z_trans)
 
 
 
@@ -80,21 +80,21 @@ def centroid():
 
 
 
-#fig = plt.figure(figsize = (12,6))
-#ax = fig.add_subplot(1,1,1)
-#n = 100
-#
-#angle = np.linspace(np.pi/2,3*np.pi/2,n)
-#circ_x = 0.5*h*np.cos(angle) 
-#circ_y = 0.5*h*np.sin(angle)
-#aileron_profile_x = (np.concatenate((np.array([0     , Ca - 0.5*h , 0      ]),circ_x)))*-1
-#aileron_profile_y = (np.concatenate((np.array([0.5*h , 0          , -0.5*h ]),circ_y)))
-#
-#ax.plot(aileron_profile_x,aileron_profile_y)
-#ax.scatter(z_trans,0)
-#ax.set_aspect('equal')
-#plt.grid()
-#plt.gca().invert_xaxis()
+    fig = plt.figure(figsize = (12,6))
+    ax = fig.add_subplot(1,1,1)
+    n = 100
+    
+    angle = np.linspace(np.pi/2,3*np.pi/2,n)
+    circ_x = 0.5*h*np.cos(angle) 
+    circ_y = 0.5*h*np.sin(angle)
+    aileron_profile_x = (np.concatenate((np.array([0     , Ca - 0.5*h , 0      ]),circ_x)))*-1
+    aileron_profile_y = (np.concatenate((np.array([0.5*h , 0          , -0.5*h ]),circ_y)))
+    
+    ax.plot(aileron_profile_x,aileron_profile_y)
+    ax.scatter(z_trans,0)
+    ax.set_aspect('equal')
+    plt.grid()
+    plt.gca().invert_xaxis()
 
 
 
