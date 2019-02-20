@@ -8,7 +8,7 @@ import numpy as np
 
 exec(open("./Data.txt").read()) 
 
-def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P):
+def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,Q):
     def transformy(Yxx,theta):
         theta_rad = np.deg2rad(theta)
         Yxx_y = Yxx * np.cos(theta_rad)
@@ -40,5 +40,7 @@ def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P):
     P_y, P_z = transformz(P,theta)
     R_y, R_z = transformz(R,theta)
     
-    return X2,Y1_new,Y2_new,Y3_new,Z1_new,Z2_new,Z3_new,R_y,R_z,P_y,P_z
+    Q_y, Q_z = transformy(Q,theta)
+    
+    return X2,Y1_new,Y2_new,Y3_new,Z1_new,Z2_new,Z3_new,R_y,R_z,P_y,P_z,Q_y,Q_z
 

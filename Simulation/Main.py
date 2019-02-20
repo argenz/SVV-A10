@@ -11,8 +11,7 @@ from Modules.Tools import transform
 
 exec(open("./Data.txt").read())       
 X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(1E-10)
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P)
-
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z,Q_y,Q_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q)
 
 
 centroid_location = centroid()
