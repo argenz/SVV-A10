@@ -1,8 +1,10 @@
 exec(open("./Data.txt").read())
 
-def deflectionqload(q,L_total,ntotal):    
-    #internal moment for force P placed at distance L_force from hinge 2
-    #right side. L_total is total distance to end of beam. ntotal is the amount of discretizations
+def deflectiondistributedload(q,L_total,ntotal,direction):    
+    #positive load q is negative direction z    
+    #internal moment for distributed load q
+    #right side. L_total is total distance from hinge 2 to the end of beam. ntotal is the amount of discretizations
+    #direction: to right (1), to left (-1)
     I=1 #### MOMENT OF INERTIA TO BE IMPLEMENTED
     
     dx=L_total/float(ntotal) #discretization distances
@@ -28,4 +30,5 @@ def deflectionqload(q,L_total,ntotal):
         xcoordinateslist.append(n*dx) #append to list of x coordinates
         n=n+1 #next
     
+    xcoordinateslist=xcoordinateslist*direction
     return deflectionlist, xcoordinateslist
