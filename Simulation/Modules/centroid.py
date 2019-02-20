@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-"""centroid calculation
-assume same material density
-we use the rotating coordinate system (XYZ)
+"""centroid calculation, assume same material density
+RETURNS centroid in (XYZ) original
+ 
 
+we use the rotating coordinate system (XYZ)' to find centroid and then transform
 z'
 y', because of symmetry y'_centroid = 0
 x', because of symmetry x'_centroid = 0
@@ -69,17 +70,6 @@ def centroid():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #fig = plt.figure(figsize = (12,6))
 #ax = fig.add_subplot(1,1,1)
 #n = 100
@@ -95,8 +85,3 @@ def centroid():
 #ax.set_aspect('equal')
 #plt.grid()
 #plt.gca().invert_xaxis()
-
-
-
-
-
