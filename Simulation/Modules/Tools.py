@@ -42,11 +42,14 @@ def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,Q,theta):
     
     Q_y, Q_z = transformy(Q,theta)
     
-    return X2,Y1_new,Y2_new,Y3_new,Z1_new,Z2_new,Z3_new,R_y,R_z,P_y,P_z,Q_y,Q_z
+    return X2,Y1_new,Y2_new,Y3_new,Z1_new,Z2_new,Z3_new,-R_y,R_z,-P_y,P_z,Q_y,Q_z
 
 def test_transform():
     assert transform(0,1,1,1,0,0,0,0,0,0,90) == (0, 6.123233995736766e-17, 6.123233995736766e-17, 6.123233995736766e-17, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     assert transform(0,0,0,0,1,1,1,0,0,0,90) == (0, 1.0, 1.0, 1.0, 6.123233995736766e-17, 6.123233995736766e-17, 6.123233995736766e-17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     assert transform(0,0,0,0,0,0,0,1,1,1,90) == (0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 6.123233995736766e-17, 1.0, 6.123233995736766e-17, 6.123233995736766e-17, 1.0)
 
-test_transform()
+#test_transform()
+
+
+read_dictionary = np.load('my_file.npy').item()
