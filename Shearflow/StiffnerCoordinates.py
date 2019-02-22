@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 def IdealizationCoordinates():
     C_a = 0.547
     h_a = 0.225
-    n_st = 50
+    n_st = 17
     
     L_p = m.sqrt((C_a-(h_a/2.))**2. +(h_a/2.)**2.) #Top and bottom panel length
     L_le = 2*m.pi*(h_a/2.)*(180./360.) #Leading edge arc length
@@ -56,10 +56,10 @@ def IdealizationCoordinates():
     B_coordinates = B_coordinatesT + B_coordinatesRev[1:]#stiffner coordinates top half of aileron
     
     #PLOT TO CHECK THE COORDINATES ARE CORRECT
-    Bplt = np.array(B_coordinates)
-    plt.plot(Bplt[:,0],Bplt[:,1],'*k')
-    plt.show()  
+    #Bplt = np.array(B_coordinates)
+    #plt.plot(Bplt[:,0],Bplt[:,1],'*k')
+    #plt.show()  
 
     return B_coordinates, b
 
-testcoordinates, btest = IdealizationCoordinates()
+#testcoordinates, btest = IdealizationCoordinates()
