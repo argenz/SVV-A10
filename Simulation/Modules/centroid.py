@@ -12,7 +12,7 @@ x', because of symmetry x'_centroid = 0
 centroid formula= SUM(area * distance) / SUM(area)
 """
 #Data
-exec(open("./Data.txt").read())
+exec(open("../Data.txt").read())
 
 def centroid():
     #things used

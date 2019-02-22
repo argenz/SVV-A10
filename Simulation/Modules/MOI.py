@@ -5,6 +5,7 @@ Created on Mon Feb 18 14:43:21 2019
 
 @author: FCRA
 """
+import numpy as np
 from math import *
 from Modules.centroid import centroid
 #from scipy.integrate import quad
@@ -12,7 +13,7 @@ from Modules.centroid import centroid
 ################### Area Moment of Inertia Tools ###########################
 #Data
 
-exec(open("./Data.txt").read())
+exec(open("../Data.txt").read())
 
 #to find the area moments of inertia we decompose the cross section in 3 parts:
 #the thin walled semi circle, and the two rectangles 
@@ -80,4 +81,22 @@ def get_Iyz(ctrd_z):
     Iyz_sm = 0 + 0 #second distance to the centroid is zero 
     Iyz = Iyz_r1 + Iyz_r2 + Iyz_sm
     return float(Iyz)
+
+#transform moments of inertias 
+def Izzrotated():
+    angle=np.deg2rad(26)
+    Izzrotated=0.5*(Izz()+Iyy())+0.5*cos(2*angle)*(Izz()-Iyy())-Iyz()*sin(2*angle)
+    return float(Izzrotated)
+def Iyyrotated():
+    angle=np.deg2rad(26) 
+    Iyyrotated=0.5*(Izz()+Iyy())-0.5*cos(2*angle)*(Izz()-Iyy())+Iyz()*sin(2*angle)
+    return float(Iyyrotated)
+
+
+
+
+
+
+
+
 
