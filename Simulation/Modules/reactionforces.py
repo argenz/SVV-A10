@@ -7,7 +7,7 @@ Created on Mon Feb 18 15:53:09 2019
 import numpy as np
 import sympy
 
-exec(open("./Data.txt").read())
+exec(open("../Data.txt").read())
 
 #R = (-q*la*(0.25*Ca-0.5*h)-P)/(np.cos(theta)*0.5*h)
 def reaction_forces(I):
