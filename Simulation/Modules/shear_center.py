@@ -8,15 +8,15 @@ This is a temporary script file.
 from math import *
 import numpy as np
 import scipy.integrate as integrate
-
+from Modules.MOI import *
 
 #Chord c
 #aileron height h
 
+exec(open("./Data.txt").read()) 
 
 
-
-def ShearCenter (Izz,t,h,c): #shear center calculation (Moment of inertia, thickness, enclosed area, aileron height)
+def get_ShearCenter (Izz,t,h,c): #shear center calculation (Moment of inertia, thickness, enclosed area, aileron height)
     #Gt assumed constant, thin wall assumption
 
     #Known
@@ -40,13 +40,12 @@ def ShearCenter (Izz,t,h,c): #shear center calculation (Moment of inertia, thick
     
     #Shear center by moment equilibrium
     ShearCenter=2*(qs0mom+qb12mom)-c
-    print(ShearCenter)
     
     return ShearCenter
 
 h=10.
 c=13.
-Izz=0.002
+#Izz=0.002
 t=0.05
-ShearCenter(0.02,0.02,5,10)
-print(ShearCenter)
+
+#print(ShearCenter(calc_Izz(),tsk,h,Ca))

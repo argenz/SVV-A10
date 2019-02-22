@@ -7,8 +7,10 @@ Created on Mon Feb 18 14:43:10 2019
 """
 
 import math as m
+import numpy as np
+import matplotlib.pyplot as plt
 
-def IdealizationCoordinates():
+def Coordinates():
     C_a = 0.547
     h_a = 0.225
     n_st = 17
@@ -43,10 +45,21 @@ def IdealizationCoordinates():
         y_B = m.cos(arc_angle)*(h_a/2)
         l_arc = l_arc + b
         if y_B < 10**-4:
-            y_B = 0
+           y_B = 0
         B_coordinatesA.append([z_B,y_B])
         if arc_angle > 90*(m.pi/180):
             break
+        
+    #PUTTING ALL COORDINATES TOGETHER 
+    B_coordinatesT = B_coordinatesTP + B_coordinatesA 
+    B_coordinatesRev = [ [x,y*-1] for [x,y] in B_coordinatesT[::-1]]
+    B_coordinates = B_coordinatesT + B_coordinatesRev[1:]#stiffner coordinates top half of aileron
     
-    return B_coordinatesTP,  B_coordinatesA, b 
+    #PLOT TO CHECK THE COORDINATES ARE CORRECT
+    Bplt = np.array(B_coordinates)
+    plt.plot(Bplt[:,0],Bplt[:,1],'*k')
+    plt.show()  
 
+    return B_coordinates, b
+
+testcoordinates, btest = Coordinates()
