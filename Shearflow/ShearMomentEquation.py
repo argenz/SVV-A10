@@ -8,7 +8,7 @@ Created on Thu Feb 21 17:13:48 2019
 import math as m
 
 def MomentEqShear(qb1, qb2, qb4, qb5):
-    #INPUTS------------------------------------------
+    #INPUTS AND GENERAL INFO ON GEOMETRIES -----------------------------------
     M_ext = 30000 #External moment about the hinge
     
     qb_1 = qb1 #Base Shear flow list top arc
@@ -17,11 +17,10 @@ def MomentEqShear(qb1, qb2, qb4, qb5):
     qb_4 = qb4 #Base Shear flow list bottom arc
     qb_5 = qb5 #Base Shear flow list bottom panel
     
-    
     h_a = 0.225 #Spar height
     R = h_a/2. # Radius arc (half the length of spar)
     C_a = 0.547 #chord length
-    l_arc = 2*m.pi*(h_a/2.)*(90./360.) #half the length of the leading edge arc
+    l_arc = 2*m.pi*(R)*(90./360.) #half the length of the leading edge arc
     l_panel = m.sqrt((C_a-(R))**2. + (R)**2.) #airfoil panel length
     Theta_p = m.atan((R)/(C_a-(R))) #angle (radians) of airfoil top and bottom panel with respect to chordline
     R_perp = m.sin(Theta_p) * (C_a - R) #Moment arm for top and bottom panels
@@ -52,7 +51,7 @@ def MomentEqShear(qb1, qb2, qb4, qb5):
     qs0_1_coefficient = 2*A1 #front cell complimentary q contribution
     qs0_2_coefficient = 2*A2 #back cell complimentary q contribution
     
-    #OBTAINING MOMENT EQUATION COEFFICIENTS-------------------------------
+    #OBTAINING all MOMENT EQUATION COEFFICIENTS-------------------------------
     
     C_0 = -integral_pqb_1 + integral_pqb_4 + integral_pqb_2 - integral_pqb_5 - M_ext
     C_1 = qs0_1_coefficient
