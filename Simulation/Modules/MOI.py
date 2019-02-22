@@ -5,18 +5,15 @@ Created on Mon Feb 18 14:43:21 2019
 
 @author: FCRA
 """
+import numpy as np
 from math import *
-<<<<<<< HEAD
-
-=======
 from Modules.centroid import centroid
->>>>>>> cfa26dd348350bb7ecc98ed78e802006a7cf0e7a
 #from scipy.integrate import quad
 
 ################### Area Moment of Inertia Tools ###########################
 #Data
 
-exec(open("./Data.txt").read())
+exec(open("../Data.txt").read())
 
 #to find the area moments of inertia we decompose the cross section in 3 parts:
 #the thin walled semi circle, and the two rectangles 
@@ -64,11 +61,7 @@ A2 = - pi*(R2**2)/2
 cntrd_sm = ((A1*z1)+(A2*z2))/(A1+A2)
 
 
-<<<<<<< HEAD
-def Iyy(ctrd_z):
-=======
-def get_Iyy():
->>>>>>> cfa26dd348350bb7ecc98ed78e802006a7cf0e7a
+def get_Iyy(ctrd_z):
     Iyy_r1 = tsk*(a_r**3)*(cos(beta_r)**2)/12 + a_r*tsk*(ctrd_r_z-ctrd_z)**2
     Iyy_r2 = Iyy_r1                            #Only thing varying is beta and it's cos so same value for negative angle
     
@@ -81,15 +74,29 @@ def get_Iyy():
 
 ############ AREA MOMENTS OF INERTIA IN YZ
 
-<<<<<<< HEAD
-def Iyz(ctrd_z):
-=======
-def get_Iyz():
->>>>>>> cfa26dd348350bb7ecc98ed78e802006a7cf0e7a
+def get_Iyz(ctrd_z):
     Iyz_r1 = tsk*(a_r**3)*sin(beta_r)*cos(beta_r)/(12) + a_r*tsk*(d_cr)*(ctrd_r_z-ctrd_z)
     Iyz_r2 = tsk*(a_r**3)*sin(-beta_r)*cos(-beta_r)/(12) + a_r*tsk*(-d_cr)*(ctrd_r_z-ctrd_z)
     
     Iyz_sm = 0 + 0 #second distance to the centroid is zero 
     Iyz = Iyz_r1 + Iyz_r2 + Iyz_sm
     return float(Iyz)
+
+#transform moments of inertias 
+def Izzrotated():
+    angle=np.deg2rad(26)
+    Izzrotated=0.5*(Izz()+Iyy())+0.5*cos(2*angle)*(Izz()-Iyy())-Iyz()*sin(2*angle)
+    return float(Izzrotated)
+def Iyyrotated():
+    angle=np.deg2rad(26) 
+    Iyyrotated=0.5*(Izz()+Iyy())-0.5*cos(2*angle)*(Izz()-Iyy())+Iyz()*sin(2*angle)
+    return float(Iyyrotated)
+
+
+
+
+
+
+
+
 
