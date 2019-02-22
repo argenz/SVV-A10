@@ -64,11 +64,11 @@ def TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5):
     
     #OBTAINING ALL TWIST EQUATION COEFFICIENTS WHEN THE 2 EQUATIONS (FOR CELL 1 & 2) ARE EQUALIZED
     
-    C1 =  C11-C21
-    C2 = C12 - C22
-    C0 =  sum_int_cell1 - sum_int_cell2
-    C = [C0, C1, C2]  #coefficients in the form 0 = C1*qs01 + C2*qs02 + C0                                                         
+    D1 =  C11-C21
+    D2 = C12 - C22
+    D0 =  sum_int_cell1 - sum_int_cell2
+    D = [D0, D1, D2]  #coefficients in the form 0 = D1*qs01 + D2*qs02 + D0                                                         
     
-    return C
+    return D
                                                                 
                                                                 

@@ -7,9 +7,9 @@ Created on Thu Feb 21 17:13:48 2019
 """
 import math as m
 
-def MomentEqShear(qb1, qb2, qb4, qb5):
+def MomentEqShear(qb1, qb2, qb4, qb5, Mext):
     #INPUTS AND GENERAL INFO ON GEOMETRIES -----------------------------------
-    M_ext = 30000 #External moment about the hinge
+    M_ext = Mext #External moment about the hinge
     
     qb_1 = qb1 #Base Shear flow list top arc
     qb_2 = qb2 #Base Shear flow list top panel
