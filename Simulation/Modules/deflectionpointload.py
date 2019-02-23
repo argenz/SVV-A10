@@ -1,7 +1,6 @@
-exec(open("../Data.txt").read())
+exec(open("./Data.txt").read())
 import numpy as np
-
-def deflectionpointload(P,L_force,L_total,ntotal,direction,initialangle,I):    
+def deflectionpointload(P,L_force,L_total,ntotal,direction,I):    
     #positive load P is negative direction z   
     
     #internal moment for force P DOWN placed at distance L_force from hinge 2
@@ -9,8 +8,8 @@ def deflectionpointload(P,L_force,L_total,ntotal,direction,initialangle,I):
     #direction: to right (1), to left (-1). Deformation is positive UPwards
     
     dx=L_total/float(ntotal) #discretization distances
-    thetatotal=initialangle #initial theta
-    deftotal=0 #initial deflection
+    thetatotal=0. #initial theta
+    deftotal=0. #initial deflection
     
     deflectionlist=[0.0]
     xcoordinateslist=[0.0]    
