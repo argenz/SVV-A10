@@ -48,7 +48,7 @@ for i in range(3,len(thickness)):
         thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
 
 # Obtaining the location of the shear center.
-shear_center = 0.03 #get_ShearCenter(get_Izz(),tsk,h,Ca)
+shear_center = 0.001 #get_ShearCenter(get_Izz(),tsk,h,Ca)
 
 # Internal torsion as a function of X (x = 0 at hinge 2.)
 def torsion(x):
@@ -122,29 +122,29 @@ for xi in np.linspace(-x2,la-x2,n):
     angle.append(angle[-1] + np.rad2deg(float(sol))*((-x2-la+x2)/n))
 
 # Plotting the angle over the length of the aileron.
-plt.plot(x,angle,color = 'r')
-plt.gca().invert_xaxis()
-
-
-
-
-
-
-
-
-
-
-
-
-#x,y = [],[]
-#for xi in np.linspace(-x2,la-x2,1000):
-#    x.append(xi)
-#    y.append(torsion(xi))
-#    
-#plt.scatter(x,y,color = 'r')
+#plt.plot(x,angle,color = 'r')
 #plt.gca().invert_xaxis()
-#
-#x = 2.771
+
+
+
+
+
+
+
+
+
+
+
+
+x,y = [],[]
+for xi in np.linspace(-x2,la-x2,1000):
+    x.append(xi)
+    y.append(torsion(xi))
+    
+plt.scatter(x,y,color = 'r', s = 1)
+#plt.gca().invert_xaxis()
+
+x = 2.771
 
 #
 #
