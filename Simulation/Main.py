@@ -13,6 +13,10 @@ from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
 from Modules.shear_center import *
+from Modules.findanglehinge2 import *
+from Modules.deflectiondistributedload import *
+from Modules.deflectionpointload import *
+
 exec(open("./Data.txt").read())    
   
 # Obtaining the location of centroid.
@@ -32,3 +36,4 @@ X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z,Q_y,Q_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,
 
 """ Maybe use this naming of the internal rf?"""
 #U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q,theta)
+xcoordinatesdiscr,ydeflectionsbending,zdeflectionsbending=defduetobending()
