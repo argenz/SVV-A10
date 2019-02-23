@@ -13,7 +13,7 @@ from Modules.centroid import centroid
 ################### Area Moment of Inertia Tools ###########################
 #Data
 
-exec(open("../Data.txt").read())
+exec(open("./Data.txt").read())
 
 #to find the area moments of inertia we decompose the cross section in 3 parts:
 #the thin walled semi circle, and the two rectangles 
