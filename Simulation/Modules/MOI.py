@@ -83,13 +83,13 @@ def get_Iyz(ctrd_z):
     return float(Iyz)
 
 #transform moments of inertias 
-def Izzrotated():
+def get_Izzrotated(ctrd_z):
     angle=np.deg2rad(26)
-    Izzrotated=0.5*(Izz()+Iyy())+0.5*cos(2*angle)*(Izz()-Iyy())-Iyz()*sin(2*angle)
+    Izzrotated=0.5*(get_Izz()+get_Iyy(ctrd_z))+0.5*cos(2*angle)*(get_Izz()-get_Iyy(ctrd_z))-get_Iyz(ctrd_z)*sin(2*angle)
     return float(Izzrotated)
-def Iyyrotated():
+def get_Iyyrotated(ctrd_z):
     angle=np.deg2rad(26) 
-    Iyyrotated=0.5*(Izz()+Iyy())-0.5*cos(2*angle)*(Izz()-Iyy())+Iyz()*sin(2*angle)
+    Iyyrotated=0.5*(get_Izz()+get_Iyy(ctrd_z))-0.5*cos(2*angle)*(get_Izz()-get_Iyy(ctrd_z))+get_Iyz(ctrd_z)*sin(2*angle)
     return float(Iyyrotated)
 
 

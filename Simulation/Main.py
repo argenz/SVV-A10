@@ -22,7 +22,7 @@ centroid_original_rf = centroid()
 Izz = get_Izz()
 Iyy = get_Iyy(centroid_original_rf[2])
 Iyz = get_Iyz(centroid_original_rf[2])
-
+Izzrotated=get_Izzrotated(centroid_original_rf[2])
 # Obtaining the location of the shear center.
 shear_center = get_ShearCenter(Izz,tsk,h,Ca)
 
