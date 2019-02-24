@@ -17,8 +17,6 @@ import matplotlib.pyplot as plt
 #INPUTS:
 exec(open("./Data.txt").read())   
 R = h/2
-Sz = 1
-Sy = 1
 
 zneg = Ca - R
 gamma = atan(R/zneg)
@@ -34,7 +32,7 @@ theta = np.linspace(0, pi/4, niter)
 zcoor14 = R*np.cos(theta)
 ycoor14 = R*np.sin(theta)
 
-def get_baseshear():
+def get_baseshear(Sz, Sy):
 #Base shear flow 1, from cut at LE on z axis to y axis above hinge line
     qb_1 =[]
     qb_1iter = 0
