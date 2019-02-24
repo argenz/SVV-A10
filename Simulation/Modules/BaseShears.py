@@ -105,7 +105,7 @@ def get_baseshear():
         qb_3iter = qb_3iter -Sy/Izz*(tsp*yspar[i])
         qb_3.append(qb_3iter)
     qb_3 = np.array(qb_3)
-    return qb_1, qb_2, qb_3, qb_4
+    return qb_1, qb_2, qb_3, qb_4, qb_5
 #plotting of shear to check
 #plt.figure()
 #plt.plot(yspar, qb_3)

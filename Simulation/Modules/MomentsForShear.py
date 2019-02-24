@@ -15,7 +15,6 @@ P = 1
 React = 1
 q = 1
 ang = 1
-
 R = h/2
 
 #location x hinge1
@@ -24,21 +23,19 @@ x_h1 = Ca/2 - xa/2
 x_h2 = Ca/2 + xa/2
 
 
-
 x = np.linspace(0, Ca, 100000)
-
+x = x_h1  #TEST BECAUSE I DONNO WHATS UP, ASK FRANCESCA, there is an error when run
 def get_Mx():
     
     if x == x_h1: 
-        M_x = -q*cos(ang)*(0.25*Ca-r) -P*cos(ang)*R + P*sin(ang)*R
+        M_x = -q*cos(ang)*(0.25*Ca-R) -P*cos(ang)*R + P*sin(ang)*R
         
     if x == x_h2:
-        M_x = -q*cos(ang)*(0.25*Ca-r) -React*cos(ang)*R + React*sin(ang)*R   
+        M_x = -q*cos(ang)*(0.25*Ca-R) -React*cos(ang)*R + React*sin(ang)*R   
     
     else: 
-        M_x = -q*cos(ang)*(0.25*Ca-r)
+        M_x = -q*cos(ang)*(0.25*Ca-R)
     return M_x
         
-        
-    
+
     

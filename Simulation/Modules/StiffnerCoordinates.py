@@ -56,10 +56,19 @@ def Coordinates():
     B_coordinates = B_coordinatesT + B_coordinatesRev[1:]#stiffner coordinates top half of aileron
     
     #PLOT TO CHECK THE COORDINATES ARE CORRECT
-    Bplt = np.array(B_coordinates)
-    plt.plot(Bplt[:,0],Bplt[:,1],'*k')
-    plt.show()  
+#    Bplt = np.array(B_coordinates)
+#    zpt = np.append(Bplt[:,0], -(C_a-(h_a/2)))
+#    ypt = np.append(Bplt[:,1],0)
+#    plt.plot(np.insert(zpt,0,-(C_a-(h_a/2))),np.insert(ypt,0,0),'k')    
+#    plt.plot(Bplt[:,0],Bplt[:,1],'or')
+#    plt.grid(color='k', linestyle=':', linewidth=0.5)
+#    plt.ylim(-0.15,0.15)
+#    plt.xlim(0.2,-0.5)
+#    plt.ylabel('y [m]')
+#    plt.xlabel('z [m]')
+#    plt.title('Aileron Cross-section')
+#    plt.show()  
 
     return B_coordinates, b
 
-testcoordinates, btest = Coordinates()
+#testcoordinates, btest = Coordinates()
