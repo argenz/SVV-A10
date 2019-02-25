@@ -41,9 +41,11 @@ def reaction_forces(I):
     
     # Calculation for Z1,Z2,Z3. This is done by using moment equation around hinge 2, sum of forces in z,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    z_direction = sympy.Matrix([[-1,-1,-1,0,0,0,0,0,0,0,R+P],
-                            [x1-x2,0,x3-x2,0,0,0,0,0,0,0, 0.5*xa*(R-P)],
-                            []
+    z_force = sympy.Matrix([[-1,-1,-1,0,0,R+P],
+                            [x1-x2,0,x3-x2,0,0, -0.5*xa*(P-R)],
+                            [0,0,0,x1,1,0],
+                            [(1/6)*(x2-x1)**3,0,0,x2,1,-(1/6)*(-0.5*xa)**3*R],
+                            [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3,0,x3,1, -(1/6)*(x3-(x2-0.5*xa))**3*R - (1/6)*(x3-(x2+0.5*xa))**3*P]])
     
     # Row reducing the two matrices to solve for the forces.
     rrefy = y_direction.rref()[0]
