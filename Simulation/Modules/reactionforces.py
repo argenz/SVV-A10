@@ -4,12 +4,13 @@ Created on Mon Feb 18 15:53:09 2019
 
 @author: Stijn
 
-This function calculated the forces on the aileron in the original(fixed to the wing) coordinate system
+This function calculated the forces on the aileron in the internal coordinate system x,y,z <> u,v,w
 """
 # Reading data and initializing libraries.
 import numpy as np
 import sympy
-from Modules.MOI import *
+from Modules.Tools import *
+#from Modules.MOI import *
 exec(open("./Data.txt").read())
 theta = 0
 def reaction_forces(I):
@@ -20,13 +21,22 @@ def reaction_forces(I):
     # Calculation or X2, just sum of forces in the x direction, one force hence X2 equals zero
     X2 = 0
     
+    d1_w = -d1 * np.sin(theta_rad)
+    d1_v = d1 * np.cos(theta_rad)
+    
+    d3_w = -d3 * np.sin(theta_rad)
+    d3_v = d3 * np.cos(theta_rad)
+    
+    X2,Y1,Y2,Y3,Z1,Z2,Z3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(0,0,0,0,0,0,0,-R,-P,-q,theta)
+    
+    
     # Calculation for Y1,Y2,Y3. This is done by using moment equation around hinge 2, sum of forces in y,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, (1/24)*q*x2**4],
-                              [0, 0, 0, x1, 1, d1*E*Izz + (1/24)*q*x1**4],
-                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3*E*Izz + (1/24)*q*x3**4],
-                              [x1-x2, 0, x3-x2, 0, 0, - q*la*(la/2 - x2)],
-                              [1, 1, 1, 0, 0, la*q]])
+    y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, (1/24)*Q_v*x2**4 - 1/6 * (xa/2) * R_v],#Bending hinge 2
+                              [0, 0, 0, x1, 1, d1_v*E*Izz + (1/24)*Q_v*x1**4],#Bending hinge 1
+                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3_v*E*Izz + (1/24)*Q_v*x3**4 - 1/6 * (x3 - x2 + xa/2) * R_v - 1/6 * (x3 - x2 - xa/2) * P_v],#Bending hinge 3
+                              [x1-x2, 0, x3-x2, 0, 0, Q_v*la*(la/2 - x2) - R_v * xa/2 + P_v * xa/2],#external moment hinge 2
+                              [1, 1, 1, 0, 0, la*Q_v + R_v + P_v]])#sum of forces
     
     # Calculation for Z1,Z2,Z3. This is done by using moment equation around hinge 2, sum of forces in z,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
@@ -75,15 +85,11 @@ def reaction_forces(I):
     test_R()
     
     
-Izz = Izz()1.25180748944789E-5
-
-Iyy = Iyy()#9.93425176458821E-5
-Iyz = Iyz()#0
-
-Izzrotated=Izzrotated(Izz,Iyy,Iyz)
+Izz = 1.25180748944789E-5
 
 
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izzrotated)
+
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izz)
 
 print("""X2: {0}
 Z1,Y1: {4},{1}
