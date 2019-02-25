@@ -12,8 +12,9 @@ import sympy
 from Modules.Tools import *
 #from Modules.MOI import *
 exec(open("./Data.txt").read())
-theta = 26
-def reaction_forces(I):
+def reaction_forces(Iyy,Izz):
+    theta = 0
+
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(theta_rad))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-theta_rad)) - P
@@ -40,11 +41,11 @@ def reaction_forces(I):
     
     # Calculation for Z1,Z2,Z3. This is done by using moment equation around hinge 2, sum of forces in z,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    z_force = sympy.Matrix([[1,1,1,0,0,Q_w*la+P_w+R_w],
-                            [x1-x2,0,x3-x2,0,0, 0.5*xa*(R_w-P_w)+Q_w*la*(x2-la/2)],
-                            [0,0,0,x1,1,E*I*d1_w-1/24*Q_w*x1**4],
-                            [(1/6)*(x2-x1)**3,0,0,x2,1,-(1/6)*(0.5*xa)**3*R_w-1/24*Q_w*x2**4],
-                            [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3,0,x3,1, E*I*d3_w-(1/6)*(x3-x2+0.5*xa)**3*R_w - (1/6)*(x3-x2-0.5*xa)**3*P_w-1/24*Q_w*x3**3]])
+    z_force = sympy.Matrix([[1,1,1,0,0,-Q_w*la-P_w-R_w], #sum of forces
+                            [x1-x2,0,x3-x2,0,0, 0.5*xa*(R_w-P_w)+Q_w*la*(x2-la/2)], #external moment hinge 2.
+                            [0,0,0,x1,1,E*Iyy*d1_w-1/24*Q_w*x1**4], #Bending hinge 1
+                            [(1/6)*(x2-x1)**3,0,0,x2,1,-(1/6)*(0.5*xa)**3*R_w-1/24*Q_w*x2**4], #Bending hinge 2
+                            [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3,0,x3,1, E*Iyy*d3_w - (1/6)*(x3-x2+0.5*xa)**3*R_w - (1/6)*(x3-x2-0.5*xa)**3*P_w - 1/24*Q_w*x3**4]])
     
     # Row reducing the two matrices to solve for the forces.
     rrefy = y_force.rref()[0]
@@ -70,11 +71,11 @@ def reaction_forces(I):
     
     def test_reactionforcesz():
         margin = 0.0001
-        assert -margin <= Z1 + Z2 + Z3 + R + P <= margin
-        assert -margin <= -(x3-x2)*Z3+(x2-x1)*Z1+0.5*xa*(R-P)<= margin
-        assert -margin <= ZA*x1+ZB <= margin
-        assert -margin <= ZA*x2+ZB  + (1/6)*(x2-x1)**3*Z1 + (1/6)*(-0.5*xa)**3*R <= margin
-        assert -margin <= ZA*x3+ZB + (1/6)*(x3-x1)**3*Z1 + (1/6)*(x3-(x2-0.5*xa))**3*R + (1/6)*(x3-x2)**3*Z2 + (1/6)*(x3-(x2+0.5*xa))**3*P <= margin
+        assert -margin <= Z1 + Z2 + Z3 + R_w + P_w + Q_w * la <= margin
+        assert -margin <= (x2-x1)*Z1 + R_w * xa/2 - P_w * xa/2 - Z3*(x3-x2) + Q_w*la*(x2-la/2) <= margin
+        assert -margin <= - E*Iyy*d1_w + 1/24*Q_w*x1**4 + ZA*x1 + ZB <= margin
+        assert -margin <= 1/6*(x2-x1)**3*Z1 + 1/24*Q_w*x2**4 + 1/6*(xa/2)**3*R_w + ZA*x2 + ZB <= margin
+        assert -margin <= -E*Iyy*d3_w + 1/6*(x3-x1)**3*Z1 + 1/6*(x3-x2)**3*Z2 + 1/24*Q_w*x3**4 + 1/6*(x3-x2+(xa/2))**3*R_w + 1/6*(x3-x2-(xa/2))**3*P_w + ZA * x3 + ZB <= margin
     
     def test_R():
         margin = 0.0001
@@ -88,10 +89,11 @@ def reaction_forces(I):
     
     
 Izz = 1.25180748944789E-5
+Iyy = 9.93425176458821E-5
 
 
 
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izz)
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Iyy,Izz)
 
 print("""X2: {0}
 Z1,Y1: {4},{1}
