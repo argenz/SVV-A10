@@ -21,30 +21,33 @@ def reaction_forces(I):
     X2 = 0
     
     # Calculation for Y1,Y2,Y3. This is done by using moment equation around hinge 2, sum of forces in y,
-    # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, (1/24)*q*x2**4],
-                              [0, 0, 0, x1, 1, d1*E*Izz + (1/24)*q*x1**4],
-                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3*E*Izz + (1/24)*q*x3**4],
-                              [x1-x2, 0, x3-x2, 0, 0, - q*la*(la/2 - x2)],
-                              [1, 1, 1, 0, 0, la*q]])
+    # and 3 compatibility equations using the known deflections of hinges 1,2 and 3.
+    #[y1,y2,y3,sinthetay,Mly,Mry,Vly,Vry, integration constant 1, integration constant 2, ANSWER], same for z
+    y_direction = sympy.Matrix([[1,1,1,0,0,0,0,0,0,0,la*q],
+                            [(x1-x2),0,(x3-x2),0,0,0,0,0,0,0,-q*la*(x2-0.5*la)],
+                            [0,(1/6)*(x2-x1)**3,0,E*I*(x2-x1),0,(1/2)*(x2-x1)**2,0,-1/6(x2-x1)**3,(x2-x1),0,d1*E*I+1/24*(x2-x1)**4*q],
+                            [0,1/6*(x3-x2)**3,0,-E*I*(x3-x2),1/2*(x3-x2)**2,0,1/6*(x3-x2)**3,0,0,(x3-x2),d3*E*I+1/24*(x3-x2)**4*q],
+                            [0,0,0,0,1,1,0,0,0,0,0],
+                            [0,0,0,0,0,0,1,1,0,0,0],
+                                [-1,0,0,0,0,0,1,0,0,0,-q*(la-x2)],
+                                [0,0,-1,0,0,0,0,1,0,0,-q*x2],
+                                
     
     # Calculation for Z1,Z2,Z3. This is done by using moment equation around hinge 2, sum of forces in z,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    z_force = sympy.Matrix([[-1,-1,-1,0,0,R+P],
-                            [x1-x2,0,x3-x2,0,0, -0.5*xa*(P-R)],
-                            [0,0,0,x1,1,0],
-                            [(1/6)*(x2-x1)**3,0,0,x2,1,-(1/6)*(-0.5*xa)**3*R],
-                            [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3,0,x3,1, -(1/6)*(x3-(x2-0.5*xa))**3*R - (1/6)*(x3-(x2+0.5*xa))**3*P]])
+    z_direction = sympy.Matrix([[-1,-1,-1,0,0,0,0,0,0,0,R+P],
+                            [x1-x2,0,x3-x2,0,0,0,0,0,0,0, 0.5*xa*(R-P)],
+                            []
     
     # Row reducing the two matrices to solve for the forces.
-    rrefy = y_force.rref()[0]
-    rrefz = z_force.rref()[0]
+    rrefy = y_direction.rref()[0]
+    rrefz = z_direction.rref()[0]
     
     # Extracting the results.
-    Y1, Y2, Y3, yA, yB = rrefy[5], rrefy[11], rrefy[17], rrefy[23], rrefy[29]
-    Z1, Z2, Z3, zA, zB = rrefz[5], rrefz[11], rrefz[17], rrefz[23], rrefz[29]
+    Y1, Y2, Y3, sinthetay = rrefy[10], rrefy[20], rrefy[30], rrefy[40]
+    Z1, Z2, Z3, sinthetaz = rrefz[10], rrefz[20], rrefz[30], rrefz[40]
     
-    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),R
+    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),R,sinthetay,sinthetaz
     # In order to test the results, comment out the return statement.
     
     # Below are the equation used for the calculations.
