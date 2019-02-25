@@ -9,10 +9,10 @@ This function calculated the forces on the aileron in the original(fixed to the 
 # Reading data and initializing libraries.
 import numpy as np
 import sympy
-from Modules.MOI import Izzrotated
+from Modules.MOI import *
 exec(open("./Data.txt").read())
 theta = 0
-def reaction_forces(Izz):
+def reaction_forces(I):
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(theta_rad))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-theta_rad)) - P
@@ -75,24 +75,15 @@ def reaction_forces(Izz):
     test_R()
     
     
-Izz = 1.25180748944789E-5
+Izz = Izz()1.25180748944789E-5
 
-Iyy = 9.93425176458821E-5
-0.25
-Iyz = 0
+Iyy = Iyy()#9.93425176458821E-5
+Iyz = Iyz()#0
 
-def Izzrotated():
-    angle=np.deg2rad(26)
-    Izzrotated=0.5*(Izz+Iyy)+0.5*np.cos(2*angle)*(Izz-Iyy)-Iyz*np.sin(2*angle)
-    return float(Izzrotated)
-def Iyyrotated():
-    angle=np.deg2rad(26) 
-    Iyyrotated=0.5*(Izz+Iyy)-0.5*np.cos(2*angle)*(Izz-Iyy)+Iyz*np.sin(2*angle)
-    return float(Iyyrotated)
+Izzrotated=Izzrotated(Izz,Iyy,Iyz)
 
-Izz = Izzrotated()
 
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izz)
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izzrotated)
 
 print("""X2: {0}
 Z1,Y1: {4},{1}
