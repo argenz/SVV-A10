@@ -99,14 +99,8 @@ def Iyz():
     Iyz_sm = 0 + 0 #second distance to the centroid is zero 
     Iyz = Iyz_r1 + Iyz_r2 + Iyz_sm
     
+    #stringers components also cancel out
+
+    
     return float(Iyz)
 
-
-def Izzrotated(Izz,Iyy,Iyz):
-    angle=np.deg2rad(26)
-    Izzrotated=0.5*(Izz+Iyy)+0.5*np.cos(2*angle)*(Izz-Iyy)-Iyz*np.sin(2*angle)
-    return float(Izzrotated)
-def Iyyrotated(Izz,Iyy,Iyz):
-    angle=np.deg2rad(26) 
-    Iyyrotated=0.5*(Izz+Iyy)-0.5*np.cos(2*angle)*(Izz-Iyy)+Iyz*np.sin(2*angle)
-    return float(Iyyrotated)
