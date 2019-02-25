@@ -12,7 +12,7 @@ import sympy
 from Modules.Tools import *
 #from Modules.MOI import *
 exec(open("./Data.txt").read())
-theta = 0
+theta = -26
 def reaction_forces(I):
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
@@ -28,13 +28,12 @@ def reaction_forces(I):
     d3_v = d3 * np.cos(theta_rad)
     
     X2,Y1,Y2,Y3,Z1,Z2,Z3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(0,0,0,0,0,0,0,-R,-P,-q,theta)
-    #print(P_v)
     
     # Calculation for Y1,Y2,Y3. This is done by using moment equation around hinge 2, sum of forces in y,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
-    y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, -(1/24)*Q_v*x2**4 + 1/6 * (xa/2) * R_v],#Bending hinge 2
+    y_force = sympy.Matrix([[(1/6)*(x2-x1)**3, 0, 0, x2, 1, -(1/24)*Q_v*x2**4 - 1/6 * (xa/2)**3 * R_v],#Bending hinge 2
                               [0, 0, 0, x1, 1, d1_v*E*Izz - (1/24)*Q_v*x1**4],#Bending hinge 1
-                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3_v*E*Izz - (1/24)*Q_v*x3**4 + 1/6 * (x3 - x2 + xa/2) * R_v + 1/6 * (x3 - x2 - xa/2) * P_v],#Bending hinge 3
+                              [(1/6)*(x3-x1)**3, (1/6)*(x3-x2)**3, 0, x3, 1, d3_v*E*Izz - (1/24)*Q_v*x3**4 - 1/6 * (x3 - x2 + xa/2)**3 * R_v - 1/6 * (x3 - x2 - xa/2)**3 * P_v],#Bending hinge 3
                               [x1-x2, 0, x3-x2, 0, 0, -Q_v*la*(la/2 - x2) + R_v * xa/2 - P_v * xa/2],#external moment hinge 2
                               [1, 1, 1, 0, 0, -la*Q_v - R_v - P_v]])#sum of forces
 
