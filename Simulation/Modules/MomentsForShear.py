@@ -8,13 +8,13 @@ Created on Fri Feb 22 15:31:22 2019
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
-from reactionforces import reaction_forces
+#from reactionforces import reaction_forces
 
 #DATA 
 exec(open("./Data.txt").read()) 
 
 
-React = reaction_forces()[-1]
+React = 1#reaction_forces()[-1]
 ang = theta*pi/180
 
 R = h/2
@@ -62,12 +62,12 @@ def get_Mx():
         
     return M_fx
 
-M_fx = get_Mx()
-
-print len(M_fx), len(x)
-        
-plt.figure()
-plt.plot(x, M_fx)
-plt.show()
-#    
+#M_fx = get_Mx()
+#
+#print len(M_fx), len(x)
+#        
+#plt.figure()
+#plt.plot(x, M_fx)
+#plt.show()
+##    
     

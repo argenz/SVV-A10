@@ -28,16 +28,16 @@ def TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5):
     intqb_1 = 0 #Integral for top half of the leading edge arc
     for i in range(len(qb_1)):
         intqb_1 += qb_1[i] * (l_arc/len(qb_1)) / t_skin
-    
+ 
     intqb_4 = 0 #Integral for the bottom half of the leading edge arc
     for i in range(len(qb_4)):
         intqb_4 += qb_4[i] * (l_arc/len(qb_4)) / t_skin
-    
+ 
     intqb_3 = 0 #Integral for the spar
     for i in range(len(qb_3)):
         intqb_3 += qb_3[i] * (h_a/len(qb_3)) / t_spar
-    
-    sum_int_cell1 = (1/(2*A1*G)) * (-intqb_1 + intqb_3 + intqb_4)
+
+    sum_int_cell1 = (1/(2*A1*G)) * (intqb_1 + intqb_3 - intqb_4)
     
     #Terms for complimentary shear flows
     C11 = (1/(2*A1*G)) * ((l_arc*2)/t_skin + h_a/t_spar)
@@ -49,14 +49,14 @@ def TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5):
     intqb_2 = 0 #Integral for the top panel 
     for i in range(len(qb_2)):
         intqb_2 += qb_2[i] * (l_panel/len(qb_2)) / t_skin
-    
+
     intqb_5 = 0 #Integral for the bottom panel
     for i in range(len(qb_5)):
         intqb_5 += qb_5[i] * (l_panel/len(qb_5)) / t_skin
-    
+  
     #intqb_3 ---> this integral is used again, it is the same as calculated for cell1
     
-    sum_int_cell2 = (1/(2*A2*G)) * (intqb_2 - intqb_5 + intqb_3)
+    sum_int_cell2 = (1/(2*A2*G)) * (-intqb_2 + intqb_5 - intqb_3) #before -+
     
     #Terms for complimentary shear flows
     C21 = (1/(2*A2*G)) * (2*l_panel/t_skin + h_a/t_spar)
@@ -64,7 +64,7 @@ def TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5):
     
     #OBTAINING ALL TWIST EQUATION COEFFICIENTS WHEN THE 2 EQUATIONS (FOR CELL 1 & 2) ARE EQUALIZED
     
-    D1 =  C11-C21
+    D1 = C11-C21
     D2 = C12 - C22
     D0 =  sum_int_cell1 - sum_int_cell2
     D = [D0, D1, D2]  #coefficients in the form 0 = D1*qs01 + D2*qs02 + D0                                                         

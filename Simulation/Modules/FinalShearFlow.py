@@ -16,8 +16,8 @@ from SolveComplimentaryShear import SolveCompShear
 from MomentsForShear import get_Mx
 from StiffnerCoordinates import Coordinates
 
-Sz = 1
-Sy = 1
+Sz = 91.7 * 1000 *m.cos(20*m.pi/180)#P = 91.7 * 1000
+Sy = 91.7 * 1000 *m.sin(20*m.pi/180) #REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
 
     
 def FinalShearFL():
@@ -25,16 +25,17 @@ def FinalShearFL():
     qb_1, qb_2, qb_3, qb_4, qb_5 = get_baseshear(Sz,Sy)
     M_ext = get_Mx()
     
-    qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))
+    xpos = 0 #Position along the x such that the moment_external is for that position
+    qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext[0]), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))
     
     #CALCULATING FINAL SHEAR FLOW VALUES----------------------------------------------
     #IF NO STIFFENER-------------------
     #qs = qs0 + qb
-    qs_1 = [i+qs01 for i in qb_1] #NOT SURE ABOUT THE SIGNS
-    qs_2 = [i+qs02 for i in qb_1]
-    qs_3 = [i+qs01+qs02 for i in qb_1]
-    qs_4 = [i+qs01 for i in qb_1]
-    qs_5 = [i+qs02 for i in qb_1]
+    qs_1 = [-i+qs01 for i in qb_1] #NOT SURE ABOUT THE SIGNS, IF THERE IS A ERROR IT IS PROBABLY HERE
+    qs_2 = [i+qs02 for i in qb_2]
+    qs_3 = [-i+qs01-qs02 for i in qb_3]
+    qs_4 = [i+qs01 for i in qb_4]
+    qs_5 = [-i+qs02 for i in qb_5]
     
     #IF STIFFENER-----------------------
     C_a = 0.547
@@ -93,4 +94,7 @@ def FinalShearFL():
 
 qs_1, qs_2, qs_3, qs_4, qs_5, q_stiffeners = FinalShearFL()
 
-
+#Tests
+qb_1, qb_2, qb_3, qb_4, qb_5 = get_baseshear(Sz,Sy)
+M_ext = get_Mx()
+qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext[0]), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))

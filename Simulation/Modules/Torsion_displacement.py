@@ -3,6 +3,8 @@
 Created on Wed Feb 20 09:10:45 2019
 
 @author: Stijn
+
+transform, shearcenter pos.
 """
 
 # Reading data and initializing libraries.
@@ -12,12 +14,12 @@ from Modules.reactionforces import *
 from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
-from Modules.shear_center import *
+from Modules.shearcenter_pos import *
 from sympy import *
 exec(open("./Data.txt").read())       
 
 # Calculation of reaction forces.
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(1E-10)
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(get_Iyy(),get_Izz())
 X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z,Q_y,Q_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q, theta)
 
 # Calculation of the upper aileron length.
@@ -47,8 +49,8 @@ for i in range(3,len(thickness)):
     if i%4 == 3:
         thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
 
-# Obtaining the location of the shear center.
-shear_center = 0.001 #get_ShearCenter(get_Izz(),tsk,h,Ca)
+# Obtaining the location of the shear center. (measured from hingeline positive in LE direction)
+shear_center = 0.031067624791857984#get_shear_center(h,Ca,Izz,tsk)
 
 # Internal torsion as a function of X (x = 0 at hinge 2.)
 def torsion(x):
