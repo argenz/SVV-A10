@@ -16,13 +16,13 @@ def deflectiondistributedload(q,L_total,ntotal,direction,I):
     while n<=ntotal: # while along the beam 
 
         #internal moment of force due to q at the cut
-        F = q*(L_total-n*dx)
-        M0 = -q*(L_total-n*dx)*(L_total-n*dx)/2
+        F = -q*(L_total-n*dx)
+        M0 = q*(L_total-n*dx)*(L_total-n*dx)/2
 
         #deformation due to the internal shear and moment, the distributed load and the already existing angle
         defshear= -F*dx**3/(3*E*I)  
         defmoment= M0*dx**2/(2*E*I)
-        defq=-q*dx**4/(8*E*I) 
+        defq=q*dx**4/(8*E*I) 
         defangle= dx*thetatotal
 
         # The new deformation is the deformation of the previous point plus all new deformations
@@ -31,7 +31,7 @@ def deflectiondistributedload(q,L_total,ntotal,direction,I):
         #theta for the 3 different components again...
         thetashear= -F*dx**2/(2*E*I) #theta due to force
         thetamoment= M0*dx/(E*I) #theta due to moment
-        thetaq=-q*dx**3/(6*E*I) #angle due to distributed load
+        thetaq=q*dx**3/(6*E*I) #angle due to distributed load
 
         #add theta from previous point plus all the new thetas
         thetatotal = thetashear +thetamoment + thetatotal +thetaq #theta summation
@@ -42,3 +42,4 @@ def deflectiondistributedload(q,L_total,ntotal,direction,I):
     
     xcoordinateslist=np.array(xcoordinateslist)*direction #to the left is negative, to the right positive
     return deflectionlist, xcoordinateslist
+

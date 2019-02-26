@@ -11,10 +11,10 @@ import numpy as np
 import sympy
 from Tools import *
 #from Modules.MOI import *
+from Modules.Tools import *
+from Modules.MOI import *
 exec(open("./Data.txt").read())
 def reaction_forces(Iyy,Izz):
-    theta = 0
-
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(theta_rad))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-theta_rad)) - P
@@ -29,7 +29,6 @@ def reaction_forces(Iyy,Izz):
     d3_v = d3 * np.cos(theta_rad)
     
     X2,Y1,Y2,Y3,Z1,Z2,Z3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(0,0,0,0,0,0,0,-R,-P,-q,theta)
-    
     # Calculation for Y1,Y2,Y3. This is done by using moment equation around hinge 2, sum of forces in y,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
     y_force = sympy.Matrix([[1, 1, 1, 0, 0, -la*Q_v - R_v - P_v], #sum of forces
@@ -54,7 +53,10 @@ def reaction_forces(Iyy,Izz):
     # Extracting the results.
     Y1, Y2, Y3 ,YA, YB = rrefy[5], rrefy[11], rrefy[17], rrefy[23], rrefy[29]
     Z1, Z2, Z3, ZA, ZB = rrefz[5], rrefz[11], rrefz[17], rrefz[23], rrefz[29]
-    
+
+    #finding the angle at hinge 2 for y and z
+    theta_x2_z=(1/2*(x2-x1)**2*Z1+1/6*Q_w*x2**3+1/2*(xa/2)**2*R_w+ZA*x2+ZB)/(E*Iyy)
+    theta_x2_y=(1/2*(x2-x1)**2*Y1+1/6*x2**3*Q_v+1/2*(xa/2)**2*R_w+YA*x2+YB)/(E*Izz)
     
     # In order to test the results, comment out the return statement.
     
@@ -85,20 +87,21 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesz()
     test_R()
     
-    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),R
-    
-    
-Izz = 1.25180748944789E-5
-Iyy = 9.93425176458821E-5
+
+    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x2_z),float(theta_x2_y))
 
 
+Izz=get_Izz()
+Iyy=get_Iyy()
+#Izz = 1.25180748944789E-5
+#Iyy = 9.93425176458821E-5
 
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Iyy,Izz)
+U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 
 print("""X2: {0}
 Z1,Y1: {4},{1}
 Z2,Y2: {5},{2}
 Z3,Y3: {6},{3}
 
-R: {7}""".format(X2/1000,Y1/1000,Y2/1000,Y3/1000,Z1/1000,Z2/1000,Z3/1000,R/1000))
+R: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
 

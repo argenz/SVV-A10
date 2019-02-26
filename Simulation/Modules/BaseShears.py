@@ -5,11 +5,14 @@ Created on Fri Feb 22 11:29:10 2019
 
 @author: FCRA
 """
-from math import *  
 import numpy as np
 from centroid import centroid
 from MOI import *
 import matplotlib.pyplot as plt
+from math import *  
+from Modules.centroid import centroid
+from Modules.MOI import *
+
 
 
 ########### Calculation of base shears #########

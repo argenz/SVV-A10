@@ -55,7 +55,6 @@ def get_shear_center(h,c,Izz,t):
 
 
     shear_cent=spar_mom+arc_mom_qb+arc_mom_qs0
-    print(shear_cent)
     #Transformation to system coordinates
     shear_cent = (c - h) - shear_cent
 
