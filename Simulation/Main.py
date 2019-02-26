@@ -24,16 +24,15 @@ centroid_original_rf = centroid()
 
 # Obtaining the MOI.
 Izz = get_Izz()
-Iyy = get_Iyy(centroid_original_rf[2])
-Iyz = get_Iyz(centroid_original_rf[2])
-Izzrotated=get_Izzrotated(centroid_original_rf[2])
+Iyy = get_Iyy()
+Iyz = get_Iyz()
+
 # Obtaining the location of the shear center.
 shear_center = get_ShearCenter(Izz,tsk,h,Ca)
 
-# Obtaining the reaction forces and their transform.      
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izzrotated)
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z,Q_y,Q_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q,theta)
+# Obtaining the reaction forces and their transform. forces in internal coordinatesystem!!    
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Iyy,Izz)
 
 """ Maybe use this naming of the internal rf?"""
 #U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q,theta)
-xcoordinatesdiscr,ydeflectionsbending,zdeflectionsbending=defduetobending()
+#xcoordinatesdiscr,ydeflectionsbending,zdeflectionsbending=defduetobending()

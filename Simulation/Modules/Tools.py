@@ -17,7 +17,7 @@ def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,Q,theta):
     def transformy(Yxx,theta):
         theta_rad = np.deg2rad(theta)
         Yxx_y = Yxx * np.cos(theta_rad)
-        Yxx_z = Yxx * np.sin(theta_rad)
+        Yxx_z = -Yxx * np.sin(theta_rad)
         return Yxx_y, Yxx_z
     
     # Function to transform a force in z-direction.
@@ -61,5 +61,5 @@ def test_transform():
     assert transform(0,0,0,0,1,1,1,0,0,0,90) == (0, 1.0, 1.0, 1.0, 6.123233995736766e-17, 6.123233995736766e-17, 6.123233995736766e-17, -0.0, 0.0, -0.0, 0.0, 0.0, 0.0)
     assert transform(0,0,0,0,0,0,0,1,1,1,90) == (0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 6.123233995736766e-17, -1.0, 6.123233995736766e-17, 6.123233995736766e-17, 1.0)
 
-test_transform()
+#test_transform()
 
