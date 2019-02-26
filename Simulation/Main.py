@@ -13,7 +13,7 @@ from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
 from Modules.shearcenter_pos import *
-from Modules.findanglehinge2 import *
+from Modules.Finddeflectionbending import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
 
@@ -31,8 +31,9 @@ Iyz = get_Iyz()
 shear_center = get_shear_center(Izz,tsk,h,Ca)
 
 # Obtaining the reaction forces and their transform. forces in internal coordinatesystem!!    
-U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w = reaction_forces(Iyy,Izz)
+U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 
 
 """ Maybe use this naming of the internal rf?"""
-#xcoordinatesdiscr,ydeflectionsbending,zdeflectionsbending=defduetobending()
+
+xcoordinatesdiscr,ydefbending,zdefbending=deformduetobending()
