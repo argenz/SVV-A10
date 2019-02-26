@@ -4,7 +4,7 @@ from Modules.reactionforces import *
 from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
-from Modules.shear_center import *
+from Modules.shearcenter_pos import *
 from Modules.findanglehinge2 import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
