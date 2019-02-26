@@ -16,17 +16,29 @@ from SolveComplimentaryShear import SolveCompShear
 from MomentsForShear import get_Mx
 from StiffnerCoordinates import Coordinates
 
-Sz = 91.7 * 1000 *m.cos(20*m.pi/180)#P = 91.7 * 1000
-Sy = 91.7 * 1000 *m.sin(20*m.pi/180) #REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
+#VARIABLES --> Sz, Sy and xpos for moments
 
-    
+#REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
+#FOR HINGE 1:
+#Sz = -84.8127*1000 + 4.53*1000*m.sin(26*m.pi/180) #P = 91.7 * 1000, Q = 4.53 * 1000
+#Sy =  26.53*1000 - 4.53*1000*m.cos(26*m.pi/180)
+#FOR ACTUATOR 1:
+#Sz =  -42.5*1000*m.cos(26*m.pi/180) + 4.53*1000*m.sin(26*m.pi/180)
+#Sy = -42.5*1000*m.sin(26*m.pi/180) - 4.53*1000*m.cos(26*m.pi/180)
+#FOR ACTUATOR 2: 
+#Sz = -91.7*1000*m.cos(26*m.pi/180) + 4.53*1000*m.sin(26*m.pi/180)
+#Sy = -91.7*1000*m.sin(26*m.pi/180) - 4.53*1000*m.cos(26*m.pi/180)
+#FOR HINGE 3
+Sz = -51.787*1000 + 4.53*1000*m.sin(26*m.pi/180)
+Sy = -51.787*1000 - 4.53*1000*m.cos(26*m.pi/180)
+   
 def FinalShearFL():
     q_extra_stiff = StiffnerContribution(Sz, Sy)
     qb_1, qb_2, qb_3, qb_4, qb_5 = get_baseshear(Sz,Sy)
     M_ext = get_Mx()
     
     xpos = 0 #Position along the x such that the moment_external is for that position
-    qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext[0]), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))
+    qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext[22]), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))
     
     #CALCULATING FINAL SHEAR FLOW VALUES----------------------------------------------
     #IF NO STIFFENER-------------------

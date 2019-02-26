@@ -6,8 +6,8 @@ Created on Mon Feb 18 14:43:21 2019
 @author: FCRA
 """
 from math import *
-from Modules.StiffnerCoordinates import Coordinates
-from Modules.centroid import centroid
+from StiffnerCoordinates import Coordinates
+from centroid import centroid
 #from scipy.integrate import quad
 
 ################### Area Moment of Inertia Tools ###########################

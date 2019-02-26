@@ -9,7 +9,7 @@ This function calculated the forces on the aileron in the internal coordinate sy
 # Reading data and initializing libraries.
 import numpy as np
 import sympy
-from Modules.Tools import *
+from Tools import *
 #from Modules.MOI import *
 exec(open("./Data.txt").read())
 def reaction_forces(Iyy,Izz):
