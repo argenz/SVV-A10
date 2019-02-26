@@ -4,7 +4,7 @@ from Modules.reactionforces import *
 from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
-from Modules.shear_center import *
+from Modules.shearcenter_pos import *
 from Modules.findanglehinge2 import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
@@ -35,9 +35,9 @@ def deformduetobending():
 
     ################Z direction
     #z deflection by Z1,Z2,Z3
-    deflectionlistZ1,x=deflectionpointload(Z1,x2-x1,x2,ntotal,right,Iyy)
-    deflectionlistZ2,x=deflectionpointload(Z2,0.0,x2,ntotal,right, Iyy) 
-    deflectionlistZ3,xnegativedirection=deflectionpointload(Z3,x3-x2,la-x2,ntotal,left,Iyy)
+    deflectionlistW1,x=deflectionpointload(W1,x2-x1,x2,ntotal,right,Iyy)
+    deflectionlistW2,x=deflectionpointload(W2,0.0,x2,ntotal,right, Iyy) 
+    deflectionlistW3,xnegativedirection=deflectionpointload(W3,x3-x2,la-x2,ntotal,left,Iyy)
 
     #z deflection by P_w,R_w
     deflectionlistP_w,xnegativedirection=deflectionpointload(P_w,xa/2.,la-x2,ntotal,left,Iyy)
@@ -52,17 +52,17 @@ def deformduetobending():
     deflectionlistzthetaright=np.array(x)*(initialthetaz)
 
     #adding all deflections
-    dzright= np.array(deflectionlistZ1)+np.array(deflectionlistR_w)+np.array(deflectionlistzthetaright)+np.array(deflectionlistq1_w)
-    dzleft=np.array(deflectionlistP_w)+np.array(deflectionlistZ3)+np.array(deflectionlistzthetaleft)+np.array(deflectionlistq2_w)
+    dzright= np.array(deflectionlistW1)+np.array(deflectionlistR_w)+np.array(deflectionlistzthetaright)+np.array(deflectionlistq1_w)
+    dzleft=np.array(deflectionlistP_w)+np.array(deflectionlistW3)+np.array(deflectionlistzthetaleft)+np.array(deflectionlistq2_w)
 
     #merging the 2 lists
     zdeflections=np.concatenate((dzleft,dzright))
     
     ###############Y direction
     #y deflection by Y1,Y2,Y3
-    deflectionlistY1,x=deflectionpointload(Y1,x2-x1,x2,ntotal,right, Izz)
-    deflectionlistY2,x=deflectionpointload(Y2,0.0,x2,ntotal,right, Izz) 
-    deflectionlistY3,xnegativedirection=deflectionpointload(Y3,x3-x2,la-x2,ntotal,left,Izz)
+    deflectionlistV1,x=deflectionpointload(V1,x2-x1,x2,ntotal,right, Izz)
+    deflectionlistV2,x=deflectionpointload(V2,0.0,x2,ntotal,right, Izz) 
+    deflectionlistV3,xnegativedirection=deflectionpointload(V3,x3-x2,la-x2,ntotal,left,Izz)
 
     #y deflection due to P_v and R_v
     deflectionlistP_v,xnegativedirection=deflectionpointload(P_v,xa/2,la-x2,ntotal,left,Izz)
@@ -77,8 +77,8 @@ def deformduetobending():
     deflectionlistythetaright=np.array(x)*(initialthetay)
 
     #adding all deflections
-    dyright=np.array(deflectionlistY1)+np.array(deflectionlistq1_v)+np.array(deflectionlistythetaright)+np.array(deflectionlistR_v)
-    dyleft=np.array(deflectionlistY3)+np.array(deflectionlistq2_v)+np.array(deflectionlistythetaleft)+np.array(deflectionlistP_v)
+    dyright=np.array(deflectionlistV1)+np.array(deflectionlistq1_v)+np.array(deflectionlistythetaright)+np.array(deflectionlistR_v)
+    dyleft=np.array(deflectionlistV3)+np.array(deflectionlistq2_v)+np.array(deflectionlistythetaleft)+np.array(deflectionlistP_v)
 
     #merging the 2 lists
     ydeflections=np.concatenate((dyleft,dyright))
