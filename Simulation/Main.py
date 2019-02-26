@@ -7,7 +7,7 @@ Created on Wed Feb 13 18:42:03 2019
 Main function to calculate delfection and shear flow of A320 aileron
 """
 # Reading data and initializing libraries and other functions.
-import numpy as np    
+import numpy as np
 from Modules.reactionforces import *
 from Modules.centroid import *
 from Modules.Tools import *

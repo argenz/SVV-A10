@@ -88,18 +88,15 @@ def reaction_forces(Iyy,Izz):
 
     return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x2_z),float(theta_x2_y))
 
-
 Izz=get_Izz()
 Iyy=get_Iyy()
-#Izz = 1.25180748944789E-5
-#Iyy = 9.93425176458821E-5
 
 U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 
 print("""X2: {0}
-Z1,Y1: {4},{1}
-Z2,Y2: {5},{2}
-Z3,Y3: {6},{3}
+W1,V1: {4},{1}
+W2,V2: {5},{2}
+W3,V3: {6},{3}
 
-R: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
+R_v,R_w: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
 
