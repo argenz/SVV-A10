@@ -38,7 +38,7 @@ def deformduetobending():
 
     #z deflection by Q_w
     deflectionlistq1_w,x=deflectiondistributedload(Q_w,x2,ntotal,right,Izz)
-    deflectionlistq2_w,xnegativedirection=deflectiondistributedload(Q_v,la-x2,ntotal,left,Izz)
+    deflectionlistq2_w,xnegativedirection=deflectiondistributedload(Q_w,la-x2,ntotal,left,Izz)
     
     #z deflection due to angle
     deflectionlistzthetaleft=np.array(xnegativedirection)*(thetaz)
