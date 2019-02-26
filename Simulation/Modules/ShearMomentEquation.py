@@ -7,6 +7,7 @@ Created on Thu Feb 21 17:13:48 2019
 """
 import math as m
 
+
 def MomentEqShear(qb1, qb2, qb4, qb5, Mext):
     #INPUTS AND GENERAL INFO ON GEOMETRIES -----------------------------------
     M_ext = Mext #External moment about the hinge
@@ -30,19 +31,19 @@ def MomentEqShear(qb1, qb2, qb4, qb5, Mext):
     integral_pqb_1 = 0 #Integral for top half of the leading edge arc
     for i in range(len(qb_1)):
         integral_pqb_1 += qb_1[i] * (l_arc/len(qb_1)) * R
-    
+
     integral_pqb_4 = 0 #Integral for the bottom half of the leading edge arc
     for i in range(len(qb_4)):
         integral_pqb_4 += qb_4[i] * (l_arc/len(qb_4)) * R
-    
+
     integral_pqb_2 = 0 #Integral for to panel
     for i in range(len(qb_2)):
         integral_pqb_2 += qb_2[i] * (l_panel/len(qb_1)) * R_perp
-                              
+                       
     integral_pqb_5 = 0 #Integral for bottom panel
     for i in range(len(qb_5)):
         integral_pqb_5 += qb_5[i] * (l_panel/len(qb_1)) * R_perp
-    
+
     #CALCULATING MOMENT CONTRIBUTIONS FOR COMPLIMENTARY SHEAR FLOWS--------------------
     
     A1 = (m.pi*R**2)/2 #Area cell leading 
@@ -53,7 +54,7 @@ def MomentEqShear(qb1, qb2, qb4, qb5, Mext):
     
     #OBTAINING all MOMENT EQUATION COEFFICIENTS-------------------------------
     
-    C_0 = -integral_pqb_1 + integral_pqb_4 + integral_pqb_2 - integral_pqb_5 - M_ext
+    C_0 = integral_pqb_1 - integral_pqb_4 - integral_pqb_2 + integral_pqb_5 - M_ext 
     C_1 = qs0_1_coefficient
     C_2 = qs0_2_coefficient
     C = [C_0, C_1, C_2] #Coeeficients in the form: 0 = C_0 + C_1*qso_1 + C_2*qso_2
