@@ -18,9 +18,10 @@ from Modules.shearcenter_pos import *
 from sympy import *
 exec(open("./Data.txt").read())       
 
+theta_rad = np.deg2rad(theta)
 # Calculation of reaction forces.
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(get_Iyy(),get_Izz())
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R_y,R_z,P_y,P_z,Q_y,Q_z = transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,q, theta)
+U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w = reaction_forces(Iyy,Izz)
+Q_v = -q*np.cos(theta_rad)
 
 # Calculation of the upper aileron length.
 length_upper = 0.25 * np.pi * h + np.sqrt((h/2)**2 + (Ca-h/2)**2)
@@ -49,35 +50,34 @@ for i in range(3,len(thickness)):
     if i%4 == 3:
         thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
 
-# Obtaining the location of the shear center. (measured from hingeline positive in LE direction)
-shear_center = 0.031067624791857984#get_shear_center(h,Ca,Izz,tsk)
+# Obtaining the location of the shear center. (measured from LE.)
+sc = h/2 #get_shear_center(h,Ca,Izz,tsk)
 
 # Internal torsion as a function of X (x = 0 at hinge 2.)
 def torsion(x):
     x += x2                                                 # Transfer to x = 0 at the root of the aileron.
 
-    T_aero = ((0.25*Ca - h/2) - shear_center) * Q_y * x     # Torque caused by the aerodynamic load q.
-    T_Y1   = Y1 * (shear_center)                            # Torque caused by Y1.
-    T_Y2   = Y2 * (shear_center)                            # Torque caused by Y2.
-    T_Y3   = Y3 * (shear_center)                            # Torque caused by Y3.
-    T_P_y  = P_y * (h/2 - shear_center)                     # Torque caused by P_y.
-    T_R_y  = R_y * (h/2 - shear_center)                     # Torque caused by R_y.
-    T_P_z  = P_z * (h/2)                                    # Torque caused by P_z.
-    T_R_z  = R_z * (h/2)                                    # Torque caused by R_z.
+    T_aero = Q_v * x * (0.25*Ca - sc)                       # Torque caused by the aerodynamic load q.
+    T_V1   = -V1 * (sc - h/2)                               # Torque caused by V1.
+    T_V2   = -V2 * (sc - h/2)                               # Torque caused by V2.
+    T_V3   = -V3 * (sc - h/2)                               # Torque caused by V3.
+    T_P    = -P_v * sc + P_w * h/2                          # Torque caused by P.
+    T_R    = -R_v * sc + R_w * h/2                          # Torque caused by R.
+
     
     # Checking in what section x lies.
     if 0 < x <= x1:                                                             # section 1
         return T_aero
     if x1 < x <= -xa/2 + x2:                                                    # section 2
-        return T_aero + T_Y1
+        return T_aero + T_V1
     if -xa/2 + x2 < x <= x2:                                                    # section 3
-        return T_aero + T_Y1 + T_R_y + T_R_z
+        return T_aero + T_V1 + T_R
     if x2 < x <= x2 + xa/2:                                                     # section 4
-        return T_aero + T_Y1 + T_R_y + T_R_z + T_Y2
+        return T_aero + T_V1 + T_R + T_V2
     if x2 + xa/2 < x <= x3:                                                     # section 5
-        return T_aero + T_Y1 + T_R_y + T_R_z + T_Y2 + T_P_y + T_P_z
+        return T_aero + T_V1 + T_R + T_V2 + T_P
     if x3 < x <= la:                                                            # section 6
-        return T_aero + T_Y1 + T_R_y + T_R_z + T_Y2 + T_P_y + T_P_z + T_Y3
+        return T_aero + T_V1 + T_R + T_V2 + T_P + T_V3
     return 0 
     
 # Area of the two cells, counted from LE to TE.
@@ -124,8 +124,10 @@ for xi in np.linspace(-x2,la-x2,n):
     angle.append(angle[-1] + np.rad2deg(float(sol))*((-x2-la+x2)/n))
 
 # Plotting the angle over the length of the aileron.
-#plt.plot(x,angle,color = 'r')
-#plt.gca().invert_xaxis()
+plt.plot(x,angle,color = 'r')
+plt.gca().invert_xaxis()
+
+print(np.rad2deg(angle[-1]))
 
 
 
@@ -137,22 +139,12 @@ for xi in np.linspace(-x2,la-x2,n):
 
 
 
-
-x,y = [],[]
-for xi in np.linspace(-x2,la-x2,1000):
-    x.append(xi)
-    y.append(torsion(xi))
-    
-plt.scatter(x,y,color = 'r', s = 1)
-#plt.gca().invert_xaxis()
-
-x = 2.771
-
-#
-#
-#
-#
-#m = (P_z + P_y + R_z + R_y)*(h/2) + Q_y*la * (0.25*Ca-h/2)
+#x,y = [],[]
+#for xi in np.linspace(-x2,la-x2,1000):
+#    x.append(xi)
+#    y.append(torsion(xi))
+#    
+#plt.plot(x,y,color = 'r')
 
 
 

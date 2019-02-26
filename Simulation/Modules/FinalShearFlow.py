@@ -8,13 +8,13 @@ Created on Fri Feb 22 16:29:55 2019
 import math as m
 import matplotlib.pyplot as plt
 
-from BaseShears import get_baseshear
-from ShearMomentEquation import MomentEqShear
-from ShearTwistRateEq import TwistEqForShear
-from StiffnerShear import StiffnerContribution
-from SolveComplimentaryShear import SolveCompShear
-from MomentsForShear import get_Mx
-from StiffnerCoordinates import Coordinates
+from Modules.BaseShears import get_baseshear
+from Modules.ShearMomentEquation import MomentEqShear
+from Modules.ShearTwistRateEq import TwistEqForShear
+from Modules.StiffnerShear import StiffnerContribution
+from Modules.SolveComplimentaryShear import SolveCompShear
+from Modules.MomentsForShear import get_Mx
+from Modules.StiffnerCoordinates import Coordinates
 
 Sz = 91.7 * 1000 *m.cos(20*m.pi/180)#P = 91.7 * 1000
 Sy = 91.7 * 1000 *m.sin(20*m.pi/180) #REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
