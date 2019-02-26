@@ -9,85 +9,106 @@ from Modules.findanglehinge2 import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
 def deformduetobending():
-    #finding centroid
-    centroid_original_rf = centroid()
+    #angle of aileron
+    theta=0. #26.
+    theta_rad = np.deg2rad(theta)
 
-    #finding the inertias in the rotated frame
-    Izzrotated=get_Izzrotated(centroid_original_rf[2])
-    Iyyrotated=get_Iyyrotated(centroid_original_rf[2])
+    
+
+    
+    #Getting the inertias
+    Izz=Izz()
+    Iyy=Iyy()
 
     #finding the reaction forces
-    X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Izzrotated)
+    X2,Y1,Y2,Y3,Z1,Z2,Z3,R,thetaz,thetay = reaction_forces(Iyy,Izz)
 
     #determining the amount of points in discr
     ntotal=10*6
     right=1 #convention
     left=-1 #convention
-
-    #the angles at hinge 2. Values found by first making them zero and
-    #then checking the error (see 
-    initialthetay=np.deg2rad(-0.03664516776096163)#np.deg2rad(-0.042389290142437454)
-    initialthetaz=np.deg2rad(0.08775488757812056)#np.deg2rad(0.08783658335221914)
     
-    #z #deflection by forces in z direction, all separated (due to force, and initialangle)
-    deflectionlistZ1,x=deflectionpointload(Z1,x2-x1,x2,ntotal,right,Iyyrotated)
-    deflectionlistZ2,x=deflectionpointload(Z2,0.0,x2,ntotal,right, Iyyrotated) 
-    deflectionlistZ3,xnegativedirection=deflectionpointload(Z3,x3-x2,la-x2,ntotal,left,Iyyrotated)
-    deflectionlistP,xnegativedirection=deflectionpointload(P,xa/2.,la-x2,ntotal,left,Iyyrotated)
-    deflectionlistR,x= deflectionpointload(R,xa/2.,x2,ntotal,right, Iyyrotated)
+    #the angles at hinge 2. Found by flexure formula
+    
+    initialthetay=thetay
+    initialthetaz=thetaz
+
+    ################Z direction
+    #z deflection by Z1,Z2,Z3
+    deflectionlistZ1,x=deflectionpointload(Z1,x2-x1,x2,ntotal,right,Iyy)
+    deflectionlistZ2,x=deflectionpointload(Z2,0.0,x2,ntotal,right, Iyy) 
+    deflectionlistZ3,xnegativedirection=deflectionpointload(Z3,x3-x2,la-x2,ntotal,left,Iyy)
+
+    #z deflection by P_w,R_w
+    deflectionlistP_w,xnegativedirection=deflectionpointload(P_w,xa/2.,la-x2,ntotal,left,Iyy)
+    deflectionlistR_w,x= deflectionpointload(R_w,xa/2.,x2,ntotal,right, Iyy)
+
+    #z deflection by Q_w
+    deflectionlistq1_w,x=deflectiondistributedload(Q_w,x2,ntotal,right,Izz)
+    deflectionlistq2_w,xnegativedirection=deflectiondistributedload(Q_v,la-x2,ntotal,left,Izz)
+    
+    #z deflection due to angle
     deflectionlistzthetaleft=np.array(xnegativedirection)*(initialthetaz)
     deflectionlistzthetaright=np.array(x)*(initialthetaz)
+
+    #adding all deflections
+    dzright= np.array(deflectionlistZ1)+np.array(deflectionlistR_w)+np.array(deflectionlistzthetaright)+np.array(deflectionlistq1_w)
+    dzleft=np.array(deflectionlistP_w)+np.array(deflectionlistZ3)+np.array(deflectionlistzthetaleft)+np.array(deflectionlistq2_w)
+
+    #merging the 2 lists
+    zdeflections=np.concatenate((dzleft,dzright))
     
-    #y deflection by forces in y direction, all separated (due to force, distr. load and initalangle)
-    deflectionlistY1,x=deflectionpointload(Y1,x2-x1,x2,ntotal,right, Izzrotated)
-    deflectionlistY2,x=deflectionpointload(Y2,0.0,x2,ntotal,right, Izzrotated) 
-    deflectionlistY3,xnegativedirection=deflectionpointload(Y3,x3-x2,la-x2,ntotal,left,Izzrotated)
-    deflectionlistq1,x=deflectiondistributedload(q,x2,ntotal,right,Izzrotated)
-    deflectionlistq2,xnegativedirection=deflectiondistributedload(q,la-x2,ntotal,left,Izzrotated)
+    ###############Y direction
+    #y deflection by Y1,Y2,Y3
+    deflectionlistY1,x=deflectionpointload(Y1,x2-x1,x2,ntotal,right, Izz)
+    deflectionlistY2,x=deflectionpointload(Y2,0.0,x2,ntotal,right, Izz) 
+    deflectionlistY3,xnegativedirection=deflectionpointload(Y3,x3-x2,la-x2,ntotal,left,Izz)
+
+    #y deflection due to P_v and R_v
+    deflectionlistP_v,xnegativedirection=deflectionpointload(P_v,xa/2,la-x2,ntotal,left,Izz)
+    deflectionlistR_v,x=deflectionpointload(R_v,xa/2,x2,ntotal,right,Izz)
+
+    #y deflection due to Q_v
+    deflectionlistq1_v,x=deflectiondistributedload(Q_v,x2,ntotal,right,Izz)
+    deflectionlistq2_v,xnegativedirection=deflectiondistributedload(Q_v,la-x2,ntotal,left,Izz)
+    
+    #y deflection due to angle
     deflectionlistythetaleft=np.array(xnegativedirection)*(initialthetay)
     deflectionlistythetaright=np.array(x)*(initialthetay)
 
-    #add all deflection on right side and put in list, same for left side. Done for z and y.
-    dzright= np.array(deflectionlistZ1)+np.array(deflectionlistR)+deflectionlistzthetaright
-    dzleft=np.array(deflectionlistP)+np.array(deflectionlistZ3)+deflectionlistzthetaleft
+    #adding all deflections
+    dyright=np.array(deflectionlistY1)+np.array(deflectionlistq1_v)+np.array(deflectionlistythetaright)+np.array(deflectionlistR_v)
+    dyleft=np.array(deflectionlistY3)+np.array(deflectionlistq2_v)+np.array(deflectionlistythetaleft)+np.array(deflectionlistP_v)
 
-    dyright=np.array(deflectionlistY1)+np.array(deflectionlistq1)+deflectionlistythetaright
-    dyleft=np.array(deflectionlistY3)+np.array(deflectionlistq2)+deflectionlistythetaleft
+    #merging the 2 lists
+    ydeflections=np.concatenate((dyleft,dyright))
 
+    #############
+    #Merge x coordinates list
+    xcoordinateslist=np.concatenate((xnegativedirection,x))
+    
     #finding the closest discretization x coordinate to points x1 and x3
-    xdummy1=x-np.full((1, ntotal+1), (x2-x1))
-    xdummy3=xnegativedirection+np.full((1, ntotal+1),(x3-x2))
+    xdummy1=xcoordinateslist-np.full((1, 2(ntotal+1)), (x2-x1))
+    xdummy3=xcoordinateslist-np.full((1, 2(ntotal+1)),(x2-x3))
     x1discr=np.argmin(abs(xdummy1))
     x3discr=np.argmin(abs(xdummy3))
 
-    #finding difference between this discretization and actual deflections (y, z)    
-    mistakerighty=dyright[x1discr]+d1
-    mistakelefty=dyleft[x3discr]+d3
+    #finding real displacements in new coordinate system
+    d1_w = -d1 * np.sin(theta_rad)
+    d1_v = d1 * np.cos(theta_rad)
+    
+    d3_w = -d3 * np.sin(theta_rad)
+    d3_v = d3 * np.cos(theta_rad)
 
-    mistakerightz=dzright[x1discr]+0
-    mistakeleftz=dzleft[x3discr]+0
+    #finding difference between this discr and reality
+    dify1=ydeflections[x1discr]-d1_v
+    dify3=ydeflections[x3discr]-d3_v
 
-    #finding the thetas needed to meet the actual case (in degrees)
-    thetayleft=np.rad2deg(-mistakelefty/(x3-x2))
-    thetayright=np.rad2deg(-mistakerighty/(x2-x1))
-
-    thetazleft=np.rad2deg(-mistakeleftz/(x3-x2))
-    thetazright=np.rad2deg(-mistakerightz/(x2-x1))
-
-    #averaging both of them
-    thetanewz=(-thetazleft+thetazright)/2
-    thetanewy=(-thetayleft+thetayright)/2 #those will be used as input later on to find the actual case
-
-    #merging left and right lists
-    xcoordinateslist=np.concatenate((xnegativedirection,x))
-    ydeflections=np.concatenate((dyleft,dyright))
-    zdeflections=np.concatenate((dzleft,dzright))
-
+    difz1=zdeflections[x1discr]-d1_w
+    difz3=zdeflections[x3discr]-d3_w
+    
     #print testvalues
-    print(thetayleft,thetayright,thetazleft,thetazright)
-    print(thetanewz,thetanewy)
-    print(mistakerighty,mistakelefty,mistakerightz,mistakeleftz)
-    return xcoordinateslist,ydeflections,zdeflections
+    print(dify1,dify3,difz1,difz3)
 
 
 

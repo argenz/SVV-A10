@@ -10,7 +10,7 @@ This function calculated the forces on the aileron in the internal coordinate sy
 import numpy as np
 import sympy
 from Modules.Tools import *
-#from Modules.MOI import *
+from Modules.MOI import *
 exec(open("./Data.txt").read())
 def reaction_forces(Iyy,Izz):
     theta = 0
@@ -50,11 +50,15 @@ def reaction_forces(Iyy,Izz):
     # Row reducing the two matrices to solve for the forces.
     rrefy = y_force.rref()[0]
     rrefz = z_force.rref()[0]
+
+    theta_x2_z=1/2(*x2-x1)**2*z1
     
     # Extracting the results.
     Y1, Y2, Y3 ,YA, YB = rrefy[5], rrefy[11], rrefy[17], rrefy[23], rrefy[29]
     Z1, Z2, Z3, ZA, ZB = rrefz[5], rrefz[11], rrefz[17], rrefz[23], rrefz[29]
-    
+
+    theta_x2_z=1/2*(x2-x1)**2*z1+1/6*Q_w*x2**3+1/2*(xa/2)**2*R_w+ZA*x2+ZB
+    theta_x2_y=1/2*(x2-x1)**2*y1+1/6*x2**3*Q_v+1/2*(xa/2)**2*R_w+YA*x2+YB
     
     # In order to test the results, comment out the return statement.
     
@@ -85,15 +89,15 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesz()
     test_R()
     
-    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),R
+    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),float(R),float(theta_x2_z),float(theta_x2_y)
     
     
-Izz = 1.25180748944789E-5
-Iyy = 9.93425176458821E-5
+#Izz = 1.25180748944789E-5
+#Iyy = 9.93425176458821E-5
 
 
 
-X2,Y1,Y2,Y3,Z1,Z2,Z3,R = reaction_forces(Iyy,Izz)
+X2,Y1,Y2,Y3,Z1,Z2,Z3,R,thetaz,thetay = reaction_forces(Iyy,Izz)
 
 print("""X2: {0}
 Z1,Y1: {4},{1}
