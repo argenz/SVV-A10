@@ -13,15 +13,12 @@ def deformduetobending():
     theta=0. #26.
     theta_rad = np.deg2rad(theta)
 
-    
-
-    
     #Getting the inertias
     Izz=Izz()
     Iyy=Iyy()
 
-    #finding the reaction forces
-    X2,Y1,Y2,Y3,Z1,Z2,Z3,R,thetaz,thetay = reaction_forces(Iyy,Izz)
+    #finding the reaction forces and angles thetaz and thetay at hinge 2.
+    U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 
     #determining the amount of points in discr
     ntotal=10*6
@@ -109,6 +106,6 @@ def deformduetobending():
     
     #print testvalues
     print(dify1,dify3,difz1,difz3)
-
+    return xcoordinateslist,ydeflections,zdeflections
 
 
