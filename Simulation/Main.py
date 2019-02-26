@@ -36,4 +36,4 @@ U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy
 
 """ Maybe use this naming of the internal rf?"""
 
-xcoordinatesdiscr,ydefbending,zdefbending,x1discr,x3discr=deformduetobending()
+#xcoordinatesdiscr,ydefbending,zdefbending,x1discr,x3discr=deformduetobending()
