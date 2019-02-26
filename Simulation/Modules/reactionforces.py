@@ -55,8 +55,8 @@ def reaction_forces(Iyy,Izz):
     Z1, Z2, Z3, ZA, ZB = rrefz[5], rrefz[11], rrefz[17], rrefz[23], rrefz[29]
 
     #finding the angle at hinge 2 for y and z
-    theta_x2_z=(1/2*(x2-x1)**2*Z1+1/6*Q_w*x2**3+1/2*(xa/2)**2*R_w+ZA*x2+ZB)/(E*Iyy)
-    theta_x2_y=(1/2*(x2-x1)**2*Y1+1/6*x2**3*Q_v+1/2*(xa/2)**2*R_w+YA*x2+YB)/(E*Izz)
+    theta_x0_z=ZB/(E*Iyy)
+    theta_x0_y=YB/(E*Izz)
     
     # In order to test the results, comment out the return statement.
     
@@ -88,7 +88,7 @@ def reaction_forces(Iyy,Izz):
     test_R()
     
 
-    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x2_z),float(theta_x2_y))
+    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x0_z),float(theta_x0_y))
 
 
 Izz=get_Izz()
