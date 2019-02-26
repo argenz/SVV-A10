@@ -42,4 +42,3 @@ def deflectiondistributedload(q,L_total,ntotal,direction,I):
     
     xcoordinateslist=np.array(xcoordinateslist)*direction #to the left is negative, to the right positive
     return deflectionlist, xcoordinateslist
-
