@@ -20,7 +20,7 @@ exec(open("./Data.txt").read())
 
 theta_rad = np.deg2rad(theta)
 # Calculation of reaction forces.
-U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w = reaction_forces(Iyy,Izz)
+U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 Q_v = -q*np.cos(theta_rad)
 
 # Calculation of the upper aileron length.
