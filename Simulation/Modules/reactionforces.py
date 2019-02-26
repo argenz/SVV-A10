@@ -90,7 +90,9 @@ def reaction_forces(Iyy,Izz):
 
     return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),R_v,R_w,P_v,P_w,float(theta_x2_z),float(theta_x2_y))
 
-    
+
+Izz=get_Izz()
+Iyy=get_Iyy()
 #Izz = 1.25180748944789E-5
 #Iyy = 9.93425176458821E-5
 

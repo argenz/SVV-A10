@@ -14,8 +14,8 @@ def deformduetobending():
     theta_rad = np.deg2rad(theta)
 
     #Getting the inertias
-    Izz=Izz()
-    Iyy=Iyy()
+    Izz=get_Izz()
+    Iyy=get_Iyy()
 
     #finding the reaction forces and angles thetaz and thetay at hinge 2.
     U2,V1,V2,V3,W1,W2,W3,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
