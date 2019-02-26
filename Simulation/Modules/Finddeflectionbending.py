@@ -20,7 +20,7 @@ def deformduetobending():
     U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
     
     #determining the amount of points in discr
-    ntotal=10**6
+    ntotal=10**3
     right=1 #convention
     left=-1 #convention
     
