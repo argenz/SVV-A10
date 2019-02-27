@@ -144,29 +144,3 @@ def deflection_torsion(steps):
 
     return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE
 
-#x = [-x2] + [np.linspace(-x2,la-x2,steps)]
-#
-#fig2 = plt.figure()
-#
-#ax1 = fig2.add_subplot(221)
-#ax1.plot(x,deflection_v_LE)
-#
-#ax1 = fig2.add_subplot(222)
-#ax1.plot(x,deflection_w_LE)
-#
-#ax1 = fig2.add_subplot(223)
-#ax1.plot(x,deflection_v_TE)
-#
-#ax1 = fig2.add_subplot(224)
-#ax1.plot(x,deflection_w_TE)
-
-
-
-
-
-
-
-
-
-
-

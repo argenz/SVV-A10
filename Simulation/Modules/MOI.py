@@ -11,8 +11,6 @@ from Modules.centroid import centroid
 #from scipy.integrate import quad
 
 ################### Area Moment of Inertia Tools ###########################
-#Data
-
 exec(open("./Data.txt").read())
 
 #to find the area moments of inertia we decompose the cross section in 3 parts:
