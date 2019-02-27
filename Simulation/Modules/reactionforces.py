@@ -87,7 +87,7 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesz()
     test_R()
 
-    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB)
+    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB
 
 #Izz=get_Izz()
 #Iyy=get_Iyy()

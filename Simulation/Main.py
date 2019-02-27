@@ -49,10 +49,10 @@ x = np.linspace(-x2,la-x2,steps)
 def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE = deflection_torsion(steps)
 def_b_v,def_b_w = deformduetobending(steps)
 
-deflection_total_v_LE = def_t_v_LE[1:] + def_b_v
-deflection_total_v_TE = def_t_v_TE[1:] + def_b_v
-deflection_total_w_LE = def_t_w_LE[1:] + def_b_w
-deflection_total_w_TE = def_t_w_TE[1:] + def_b_w
+deflection_total_v_LE = def_t_v_LE + def_b_v
+deflection_total_v_TE = def_t_v_TE + def_b_v
+deflection_total_w_LE = def_t_w_LE + def_b_w
+deflection_total_w_TE = def_t_w_TE + def_b_w
 
 fig = plt.figure()
 
