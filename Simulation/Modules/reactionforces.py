@@ -88,7 +88,7 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesz()
     test_R()
 
-    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x0_z),float(theta_x0_y))
+    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB)
 
 #Izz=get_Izz()
 #Iyy=get_Iyy()
@@ -101,4 +101,5 @@ def reaction_forces(Iyy,Izz):
 #W3,V3: {6},{3}
 #
 #R_v,R_w: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
+
 
