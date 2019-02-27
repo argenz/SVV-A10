@@ -54,7 +54,7 @@ def deflection_torsion(steps):
             thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
     
     # Obtaining the location of the shear center. (measured from LE.)
-    sc = 0.12#h/2 - get_shear_center(h,Ca,Izz,tsk)
+    sc = h/2 - get_shear_center(h,Ca,Izz,tsk)
     
     # Internal torsion as a function of X (x = 0 at hinge 2.)
     def torsion(x):
@@ -142,16 +142,9 @@ def deflection_torsion(steps):
     deflection_v_TE = (la-h/2) * np.sin(y_angle_corrected)
     deflection_w_TE = (la-h/2) * np.cos(y_angle_corrected) - (la-h/2)
 
-    return deflection_v_LE,deflection_w_LE,deflection_v_TE,deflection_w_TE
+    return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE
 
-#y_angle_deg = [np.rad2deg(a) for a in y_angle]    
-#fig1 = plt.figure()
-#
-#ax1 = fig1.add_subplot(121)
-#ax1.plot(x,y_torsion,color = 'r')
-#
-#ax2 = fig1.add_subplot(122)
-#ax2.plot(x,y_angle_deg)
+#x = [-x2] + [np.linspace(-x2,la-x2,steps)]
 #
 #fig2 = plt.figure()
 #
