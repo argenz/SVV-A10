@@ -133,7 +133,7 @@ def deflection_torsion(steps):
     i = 0
     while x[i] < 0:
         i+=1
-    zero = x[i]
+    zero = i
     y_angle = np.array(y_angle)
     y_angle_corrected = y_angle-y_angle[zero]
     
