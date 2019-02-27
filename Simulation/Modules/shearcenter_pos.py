@@ -10,10 +10,10 @@ import numpy as np
 import scipy.integrate as integrate
 
 #Values in meters
-h=0.225
-c=0.547
-Izz=0.00000764
-t=0.011
+#h=0.225
+#c=0.547
+#Izz=0.00000764
+#t=0.0011
 
 
 def get_shear_center(h,c,Izz,t):
@@ -39,8 +39,7 @@ def get_shear_center(h,c,Izz,t):
 
     #qb integrated around cell 2. 
     qb52int=integrate.dblquad(lambda s, s5: 1/Izz*t*s5*sin(alpha), 0, diagonal, lambda s:0, lambda s: s)
-    qb21int=integrate.dblquad(lambda s, s4: 1/Izz*t*(r-s4), 0, r, lambda s:0, lambda s: s)
-    qbint2=2*(qb21int[0])+2*qb52int[0]
+    qbint2=2*(-qb12int[0])+2*qb52int[0]
 
     #Qs0 determination
     #qs0I
@@ -49,15 +48,16 @@ def get_shear_center(h,c,Izz,t):
     qs0II=(-qbint2+qs0I*h)/p_cell_2
 
     #Moments NOTE: moments taken about TE, CCW pos
-    spar_mom=(c-r)*(2*qb21int[0]+qs0II-2*qb12int[0]-qs0I)
-    arc_mom_qb=2*integrate.dblquad(lambda s, s2: 1/Izz*t*r*sin(pi/2-s2/r)*sqrt((r*sin(pi/2-s/r))**2+(c-r+r*cos(pi/2-s/r))**2), 0, r*pi/2, lambda s:0, lambda s: s)[0]
+    spar_mom=(c-r)*(-2*qb12int[0]+qs0II-2*qb12int[0]-qs0I)
+    arc_mom_qb=-2*integrate.dblquad(lambda s, s2: 1/Izz*t*r*sin(s2/r)*sqrt((r*sin(s/r))**2+(c-r+r*cos(s/r))**2), 0, r*pi/2, lambda s:0, lambda s: s)[0]
     arc_mom_qs0=-2*integrate.quad(lambda s2: qs0I*sqrt((r*sin(s2/r))**2+(c-r+r*cos(s2/r))**2), 0, r*pi/2)[0]
 
-
+    #print(qb12int,qb23int,qb52int,qs0I,qs0II)
     shear_cent=spar_mom+arc_mom_qb+arc_mom_qs0
+    #print(spar_mom, arc_mom_qb, arc_mom_qs0)
     print(shear_cent)
     #Transformation to system coordinates
-    shear_cent = (c - h) - shear_cent
+    shear_cent=r-(c+shear_cent)
 
 
     return(shear_cent)

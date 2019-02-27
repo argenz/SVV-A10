@@ -8,16 +8,16 @@ Created on Fri Feb 22 16:29:55 2019
 import math as m
 import matplotlib.pyplot as plt
 
-from Modules.BaseShears import get_baseshear
+from SecondAttemptBS import get_baseshear
 from ShearMomentEquation import MomentEqShear
 from ShearTwistRateEq import TwistEqForShear
 from StiffnerShear import StiffnerContribution
 from SolveComplimentaryShear import SolveCompShear
 from MomentsForShear import get_Mx
 from StiffnerCoordinates import Coordinates
-
-Sz = 91.7 * 1000 *m.cos(20*m.pi/180)#P = 91.7 * 1000
-Sy = 91.7 * 1000 *m.sin(20*m.pi/180) #REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
+        #edge loading                         #actuator 2 loading 
+Sz = 4.53* 1000 * m.cos(26*m.pi/180) # 91.7 * 1000 *m.cos(20*m.pi/180) #P = 91.7 * 1000
+Sy = -4.53 * 1000 * m.sin(26*m.pi/180) # 91.7* 1000 *m.sin(20*m.pi/180) #REMBER Sy AND Sz HAVE TO MATCH THE POSITION AT WHICH THE M_ext IS ALSO SELECTED
 
     
 def FinalShearFL():
@@ -28,14 +28,15 @@ def FinalShearFL():
     xpos = 0 #Position along the x such that the moment_external is for that position
     qs01, qs02 = SolveCompShear(MomentEqShear(qb_1, qb_2, qb_4, qb_5, M_ext[0]), TwistEqForShear(qb_1, qb_2, qb_3, qb_4, qb_5))
     
+                                                                        #Moment at the beginning of Aileron 
     #CALCULATING FINAL SHEAR FLOW VALUES----------------------------------------------
     #IF NO STIFFENER-------------------
     #qs = qs0 + qb
-    qs_1 = [-i+qs01 for i in qb_1] #NOT SURE ABOUT THE SIGNS, IF THERE IS A ERROR IT IS PROBABLY HERE
+    qs_1 = [i-qs01 for i in qb_1] #NOT SURE ABOUT THE SIGNS, IF THERE IS A ERROR IT IS PROBABLY HERE
     qs_2 = [i+qs02 for i in qb_2]
-    qs_3 = [-i+qs01-qs02 for i in qb_3]
+    qs_3 = [i-qs01+qs02 for i in qb_3]
     qs_4 = [i+qs01 for i in qb_4]
-    qs_5 = [-i+qs02 for i in qb_5]
+    qs_5 = [i-qs02 for i in qb_5]
     
     #IF STIFFENER-----------------------
     C_a = 0.547
