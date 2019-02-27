@@ -16,7 +16,7 @@ Izz=1.3970016921429686e-05
 t=0.0011
 
 
-def shear_center(h,c,Izz,t):
+def get_shear_center(h,c,Izz,t):
     
     #Qb determination
     r=h/2
