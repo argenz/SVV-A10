@@ -6,12 +6,12 @@ Created on Fri Feb 22 12:00:53 2019
 @author: PereiraJoao
 """
 from StiffnerCoordinates import Coordinates
-from MOI  import Izz, Iyy
+from MOI  import *
 
 def StiffnerContribution(Sz, Sy): # inputs are the vertical and horizontal forces acting on the corss section
     
-    I_zz = Izz()
-    I_yy = Iyy()
+    I_zz = get_Izz()
+    I_yy = get_Iyy()
     Qz = Sz/I_yy 
     Qy = Sy/I_zz
     Astiffner = 0.0012*(0.015-0.0012) + (0.02*0.0012) #stiffner area [m]
