@@ -8,7 +8,7 @@ Created on Fri Feb 22 16:29:55 2019
 import math as m
 import matplotlib.pyplot as plt
 
-from BaseShears import get_baseshear
+from Modules.BaseShears import get_baseshear
 from ShearMomentEquation import MomentEqShear
 from ShearTwistRateEq import TwistEqForShear
 from StiffnerShear import StiffnerContribution
