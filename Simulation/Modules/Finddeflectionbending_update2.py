@@ -28,8 +28,6 @@ def deformduetobending(steps):
     u=0
     n=0
     step=float(la)/float(ntotal-1)
-    print(step)
-    print(ntotal*step)
     while n<=(ntotal-1):
         if u<=x1:
             v=(1/24*Q_v*u**4+yA*u+yB)/(E*Izz)
@@ -84,11 +82,7 @@ def deformduetobending(steps):
 
     difz1=wcoordinates[x1discr]-d1_w
     difz3=wcoordinates[x3discr]-d3_w
-    
-    #print testvalues
-    print(vcoordinates[x1discr],vcoordinates[x3discr],wcoordinates[x1discr],wcoordinates[x3discr])
-    print(d1_v,d3_v,d1_w,d3_w)
-    print(dify1,dify3,difz1,difz3)
+
     return vcoordinates,wcoordinates
 
 
