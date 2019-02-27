@@ -35,7 +35,14 @@ shear_center = get_shear_center(Izz,tsk,h,Ca)
 # Obtaining the reaction forces and their transform. forces in internal coordinatesystem!!    
 U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB = reaction_forces(Iyy,Izz)
 
-""" Maybe use this naming of the internal rf?"""
+
+print("""X2: {0}
+W1,V1: {4},{1}
+W2,V2: {5},{2}
+W3,V3: {6},{3}
+
+R_v,R_w: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
+
 
 
 #ucoordinates,vdefbend,wdefbend,x1discr,x3discr=deformduetobending()

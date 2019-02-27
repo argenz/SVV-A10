@@ -15,7 +15,6 @@ from Modules.Tools import *
 from Modules.MOI import *
 exec(open("./Data.txt").read())
 def reaction_forces(Iyy,Izz):
-    theta = 0
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(theta_rad))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-theta_rad)) - P
