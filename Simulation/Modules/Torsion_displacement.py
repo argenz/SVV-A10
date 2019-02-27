@@ -20,6 +20,7 @@ exec(open("./Data.txt").read())
 
 theta_rad = np.deg2rad(theta)
 # Calculation of reaction forces.
+Iyy,Izz = get_Iyy(), get_Izz()
 U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
 Q_v = -q*np.cos(theta_rad)
 
@@ -51,16 +52,16 @@ for i in range(3,len(thickness)):
         thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
 
 # Obtaining the location of the shear center. (measured from LE.)
-sc = h/2 #get_shear_center(h,Ca,Izz,tsk)
+sc = 0.12#h/2 - get_shear_center(h,Ca,Izz,tsk)
 
 # Internal torsion as a function of X (x = 0 at hinge 2.)
 def torsion(x):
     x += x2                                                 # Transfer to x = 0 at the root of the aileron.
 
     T_aero = Q_v * x * (0.25*Ca - sc)                       # Torque caused by the aerodynamic load q.
-    T_V1   = -V1 * (sc - h/2)                               # Torque caused by V1.
-    T_V2   = -V2 * (sc - h/2)                               # Torque caused by V2.
-    T_V3   = -V3 * (sc - h/2)                               # Torque caused by V3.
+    T_V1   = 0#-V1 * (sc - h/2)                               # Torque caused by V1.
+    T_V2   = 0#-V2 * (sc - h/2)                               # Torque caused by V2.
+    T_V3   = 0#-V3 * (sc - h/2)                               # Torque caused by V3.
     T_P    = -P_v * sc + P_w * h/2                          # Torque caused by P.
     T_R    = -R_v * sc + R_w * h/2                          # Torque caused by R.
 
@@ -124,8 +125,8 @@ for xi in np.linspace(-x2,la-x2,n):
     angle.append(angle[-1] + np.rad2deg(float(sol))*((-x2-la+x2)/n))
 
 # Plotting the angle over the length of the aileron.
-plt.plot(x,angle,color = 'r')
-plt.gca().invert_xaxis()
+#plt.plot(x,angle,color = 'r')
+#plt.gca().invert_xaxis()
 
 print(np.rad2deg(angle[-1]))
 
@@ -139,12 +140,12 @@ print(np.rad2deg(angle[-1]))
 
 
 
-#x,y = [],[]
-#for xi in np.linspace(-x2,la-x2,1000):
-#    x.append(xi)
-#    y.append(torsion(xi))
-#    
-#plt.plot(x,y,color = 'r')
+x,y = [],[]
+for xi in np.linspace(-x2,la-x2,1000):
+    x.append(xi)
+    y.append(torsion(xi))
+    
+plt.plot(x,y,color = 'r')
 
 
 

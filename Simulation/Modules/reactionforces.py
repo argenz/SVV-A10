@@ -15,6 +15,7 @@ from Modules.Tools import *
 from Modules.MOI import *
 exec(open("./Data.txt").read())
 def reaction_forces(Iyy,Izz):
+    theta = 0
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
     R =  (-q*la*(0.25*Ca-0.5*h)*np.cos(theta_rad))/(h*0.5*np.sqrt(2)*np.sin(np.pi*0.25-theta_rad)) - P
@@ -86,19 +87,18 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesy()
     test_reactionforcesz()
     test_R()
-    
 
     return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,float(theta_x0_z),float(theta_x0_y))
 
-Izz=get_Izz()
-Iyy=get_Iyy()
-
-U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
-
-print("""X2: {0}
-W1,V1: {4},{1}
-W2,V2: {5},{2}
-W3,V3: {6},{3}
-
-R_v,R_w: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
+#Izz=get_Izz()
+#Iyy=get_Iyy()
+#
+#U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,thetaz,thetay = reaction_forces(Iyy,Izz)
+#
+#print("""X2: {0}
+#W1,V1: {4},{1}
+#W2,V2: {5},{2}
+#W3,V3: {6},{3}
+#
+#R_v,R_w: {7},{8}""".format(U2/1000,V1/1000,V2/1000,V3/1000,W1/1000,W2/1000,W3/1000,R_v/1000,R_w/1000))
 

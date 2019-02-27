@@ -83,9 +83,9 @@ def deformduetobending():
     difz3=zdeflections[x3discr]-d3_w
     
     #print testvalues
-    print(ydeflections[x1discr],ydeflections[x3discr],zdeflections[x1discr],zdeflections[x3discr])
-    print(d1_v,d3_v,d1_w,d3_w)
-    print(dify1,dify3,difz1,difz3)
+    #print(ydeflections[x1discr],ydeflections[x3discr],zdeflections[x1discr],zdeflections[x3discr])
+    #print(d1_v,d3_v,d1_w,d3_w)
+    #print(dify1,dify3,difz1,difz3)
     return x,ydeflections,zdeflections,x1discr,x3discr
 
 
