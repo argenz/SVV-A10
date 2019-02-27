@@ -24,7 +24,7 @@ def transform(X2,Y1,Y2,Y3,Z1,Z2,Z3,R,P,Q,theta):
     def transformz(Zxx,theta):
         theta_rad = np.deg2rad(theta)
         Zxx_y = Zxx * np.sin(theta_rad)
-        Zxx_z = Zxx * np.cos(theta_rad)
+        Zxx_z = -Zxx * np.cos(theta_rad)
         return Zxx_y, Zxx_z
     
     # Transforming the forces in y-direction.
