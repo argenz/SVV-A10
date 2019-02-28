@@ -72,7 +72,7 @@ ax4 = fig.add_subplot(224)
 ax4.plot(x,deflection_total_w_TE)
 ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
 
-if False:
+if True:
     plt.close()    
     fig = plt.figure()
     ax = fig.add_subplot(111)

@@ -62,4 +62,4 @@ def get_shear_center(h,c,Izz,t):
 
     return(shear_cent)
 #
-#print (shear_center(h,c,Izz,t))
+print(get_shear_center(h,c,Izz,t))

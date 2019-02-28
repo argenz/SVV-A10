@@ -52,7 +52,7 @@ def deflection_torsion(steps):
             thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
     
     # Obtaining the location of the shear center. (measured from LE.)
-    sc = 0.11 #h/2 - get_shear_center(h,Ca,Izz,tsk)
+    sc = h/2 - get_shear_center(h,Ca,Izz,tsk)
     
     # Area of the two cells, counted from LE to TE.
     Area_I  = 0.5 * np.pi*(h/2)**2
@@ -152,7 +152,7 @@ def deflection_torsion(steps):
         assert thickness[-1][1] == length_upper
     
     test_torsion_function1()
-    test_torsion_function2()
+    #test_torsion_function2()
     test_thickness_array()
     
     plot = True
