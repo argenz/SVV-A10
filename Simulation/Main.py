@@ -7,17 +7,17 @@ Created on Wed Feb 13 18:42:03 2019
 Main function to calculate delfection and shear flow of A320 aileron
 """
 # Reading data and initializing libraries and other functions.
-import numpy as np
-import matplotlib.pyplot as plt
-import numpy as np    
+import numpy as np 
+   
 from Modules.reactionforces import *
 from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
 from Modules.shearcenter_pos import *
-from Modules.Finddeflectionbending_update2 import *
+from Modules.findanglehinge2 import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
+from Modules.FinalShearFlow import *
 from Modules.Torsion_displacement import *
 
 exec(open("./Data.txt").read())    
@@ -90,7 +90,6 @@ print(avg/5)
 
 
 
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -146,7 +145,6 @@ ax3.set(title = 'LE', xlabel = 'U', ylabel = 'W')
 ax4 = fig.add_subplot(224)
 ax4.plot(x,deflection_total_w_TE)
 ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
-
 
 
 

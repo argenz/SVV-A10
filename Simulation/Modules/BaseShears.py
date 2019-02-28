@@ -1,18 +1,18 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 22 11:29:10 2019
+Created on Wed Feb 27 16:44:49 2019
 
 @author: FCRA
 """
-import numpy as np
-from centroid import centroid
-from MOI import *
-import matplotlib.pyplot as plt
+
+#NEW ATTEMPT FOR BASE SHEAR
+
 from math import *  
+import numpy as np
 from Modules.centroid import centroid
 from Modules.MOI import *
-
+import matplotlib.pyplot as plt
 
 
 ########### Calculation of base shears #########
@@ -30,49 +30,52 @@ Iyz = get_Iyz()
 
 niter = 100
 
-#defining coordinates for first cell
-theta = np.linspace(0, pi/4, niter)
-zcoor14 = R*np.cos(theta)
-ycoor14 = R*np.sin(theta)
+#integration carried out with respect to the centroid 
 
 def get_baseshear(Sz, Sy):
-#Base shear flow 1, from cut at LE on z axis to y axis above hinge line
-    L_le = 2*pi*(h/2.)*(180./360.) 
-    s_le = L_le/2/niter
+    #Base shear flow 1, from cut at LE on z axis to y axis above hinge line
+    L_le = pi*(h/2.)/2.
+    s_le = L_le/niter
+    z = np.linspace(R, centroid()[2], niter)
+    y = np.linspace(0, R, niter) 
+    
+    
     qb_1 =[]
     qb_1iter = 0
     for i in range(niter):
-        qb_1iter = qb_1iter - Sz/Iyy * (tsk*R*cos(theta[i])*s_le) - Sy/Izz*(tsk*R*sin(theta[i])*s_le)
+        qb_1iter = qb_1iter - Sz/Iyy * (tsk*z[i]*s_le) - Sy/Izz*(tsk*y[i]*s_le)
         qb_1.append(qb_1iter)
     qb_1 = np.array(qb_1)
-
-##plotting of shear to check
-#plt.figure()
-#plt.plot(zcoor14, qb_1)
-#plt.show() 
-
-#Base shear flow 4, from cut at LE on z axis to y axis below hinge line
-
+    
+    #plotting of shear to check
+    #plt.figure()
+    #plt.plot(qb_1)
+    #plt.show() 
+    
+    #Base shear flow 4, from cut at LE on z axis to y axis below hinge line
+    
     qb_4 =[]
     qb_4iter = 0
+    
     for i in range(niter):
-        qb_4iter = qb_4iter - Sz/Iyy * (tsk*R*cos(theta[i])*s_le) - Sy/Izz*(tsk*R*sin(theta[i])*s_le)
+        qb_4iter = qb_4iter - Sz/Iyy * (tsk*z[i]*s_le) - Sy/Izz*(-tsk*y[i]*s_le)
         qb_4.append(qb_4iter)
     qb_4 = np.array(qb_4)   
-
-##plotting of shear to check
-#plt.figure()
-#plt.plot(zcoor14, qb_4)
-#plt.show()     
     
-#defining coordinates for second cell
+    ##plotting of shear to check
+    plt.figure()
+    plt.plot(qb_4)
+    plt.show()     
+    
+    #defining coordinates for second cell
     s2tot = sqrt(R**2 + zneg**2)
-    s2 = np.linspace(0, s2tot, niter)
+    s2 = np.linspace(-s2tot, 0, niter)
     space = s2tot/niter
-    zcoor25 = s2*cos(gamma)
+    zcoor25 = s2*cos(gamma) - centroid()[2]
     ycoor25 = s2*sin(gamma)
-
-#Base shear flow 2, from cut at TE on z axis to y axis above hinge line
+    ycoor25 = ycoor25[::-1]
+    
+    #Base shear flow 2, from cut at TE on z axis to y axis above hinge line
     qb_2 = []
     qb_2iter = 0
     for i in range(niter): 
@@ -80,25 +83,26 @@ def get_baseshear(Sz, Sy):
         qb_2.append(qb_2iter)
     qb_2 = np.array(qb_2)
     
-##plotting of shear to check
-#plt.figure()
-#plt.plot(zcoor25, qb_2)
-#plt.show()     
-
-#Base shear flow 5, from cut at TE on z axis to y axis below hinge line 
+    ##plotting of shear to check
+    #plt.figure()
+    #plt.plot(zcoor25, qb_2)
+    #plt.show()     
+    
+    #Base shear flow 5, from cut at TE on z axis to y axis below hinge line 
+    
     qb_5 = []
     qb_5iter = 0
     for i in range(niter):
-        qb_5iter =  qb_5iter - Sz/Iyy*(tsk*zcoor25[i]*space) - Sy/Izz*(tsk*ycoor25[i]*space)
+        qb_5iter =  qb_5iter - Sz/Iyy*(tsk*zcoor25[i]*space) - Sy/Izz*(-tsk*ycoor25[i]*space)
         qb_5.append(qb_5iter)
     qb_5 = np.array(qb_5)
-
-##plotting of shear to check
-#plt.figure()
-#plt.plot(zcoor25, qb_5)
-#plt.show()     
-
-#defining coordinates for spar
+    
+    ##plotting of shear to check
+    #plt.figure()
+    #plt.plot(zcoor25, qb_5)
+    #plt.show()     
+    
+    #defining coordinates for spar
     yspar = np.linspace(h/2, -h/2, 100)
     
     #Base shear flow 3 on y axis 
@@ -111,9 +115,9 @@ def get_baseshear(Sz, Sy):
         qb_3.append(qb_3iter)
     
     qb_3 = np.array(qb_3)
-    
     return qb_1, qb_2, qb_3, qb_4, qb_5
-#plotting of shear to check
-#plt.figure()
-#plt.plot(yspar, qb_3)
-#plt.show() 
+    #plotting of shear to check
+    #plt.figure()
+    #plt.plot(yspar, qb_3)
+    #plt.show() 
+    
