@@ -14,6 +14,7 @@ from Tools import *
 from Modules.Tools import *
 from Modules.MOI import *
 exec(open("./Data.txt").read())
+#theta = 0
 def reaction_forces(Iyy,Izz):
     theta_rad = np.deg2rad(theta)
     # Calculation of R, just a moment equation around the hingeline to solve for R.
@@ -28,7 +29,7 @@ def reaction_forces(Iyy,Izz):
     d3_w = -d3 * np.sin(theta_rad)
     d3_v = d3 * np.cos(theta_rad)
     
-    X2,Y1,Y2,Y3,Z1,Z2,Z3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(0,0,0,0,0,0,0,-R,-P,-q,theta)
+    X2,Y1,Y2,Y3,Z1,Z2,Z3,R_v,R_w,P_v,P_w,Q_v,Q_w = transform(0,0,0,0,0,0,0,R,P,-q,theta)
     # Calculation for Y1,Y2,Y3. This is done by using moment equation around hinge 2, sum of forces in y,
     # and 3 compatibility equations using the known deflections of hinges 1,2 and 3. 
     y_force = sympy.Matrix([[1, 1, 1, 0, 0, -la*Q_v - R_v - P_v], #sum of forces
@@ -87,7 +88,7 @@ def reaction_forces(Iyy,Izz):
     test_reactionforcesz()
     test_R()
 
-    return (float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB)
+    return float(X2), float(Y1),float(Y2),float(Y3),float(Z1),float(Z2),float(Z3),Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB
 
 #Izz=get_Izz()
 #Iyy=get_Iyy()

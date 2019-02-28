@@ -7,7 +7,7 @@ from Modules.MOI import *
 from Modules.shearcenter_pos import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
-def deformduetobending():
+def deformduetobending(steps):
     #angle of aileron
     theta=26. #26.
     theta_rad = np.deg2rad(theta)
@@ -20,7 +20,7 @@ def deformduetobending():
     U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,yA,yB,zA,zB = reaction_forces(Iyy,Izz)
     
     #determining the amount of points in discr
-    ntotal=10**4
+    ntotal=steps
 
     ucoordinates=[]
     vcoordinates=[]
@@ -28,8 +28,6 @@ def deformduetobending():
     u=0
     n=0
     step=float(la)/float(ntotal-1)
-    print(step)
-    print(ntotal*step)
     while n<=(ntotal-1):
         if u<=x1:
             v=(1/24*Q_v*u**4+yA*u+yB)/(E*Izz)
@@ -84,11 +82,7 @@ def deformduetobending():
 
     difz1=wcoordinates[x1discr]-d1_w
     difz3=wcoordinates[x3discr]-d3_w
-    
-    #print testvalues
-    print(vcoordinates[x1discr],vcoordinates[x3discr],wcoordinates[x1discr],wcoordinates[x3discr])
-    print(d1_v,d3_v,d1_w,d3_w)
-    print(dify1,dify3,difz1,difz3)
-    return ucoordinates,vcoordinates,wcoordinates,x1discr,x3discr
+
+    return vcoordinates,wcoordinates
 
 

@@ -19,13 +19,12 @@ from sympy import *
 exec(open("./Data.txt").read())       
 
 def deflection_torsion(steps):
+#    theta = 0
     theta_rad = np.deg2rad(theta)
     # Calculation of reaction forces.
     Iyy,Izz = get_Iyy(), get_Izz()
     U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB = reaction_forces(Iyy,Izz)
-    
-    Q_v = -q*np.cos(theta_rad)
-    
+
     # Calculation of the upper aileron length.
     length_upper = 0.25 * np.pi * h + np.sqrt((h/2)**2 + (Ca-h/2)**2)
     
@@ -54,7 +53,33 @@ def deflection_torsion(steps):
             thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
     
     # Obtaining the location of the shear center. (measured from LE.)
-    sc = 0.12#h/2 - get_shear_center(h,Ca,Izz,tsk)
+    sc = h/2 - get_shear_center(h,Ca,Izz,tsk,tsp)
+    
+    # Area of the two cells, counted from LE to TE.
+    Area_I  = 0.5 * np.pi*(h/2)**2
+    Area_II = h/2 * (Ca-h/2)
+        
+    # Splitting the thickness array into the curved part (a) and straight part (b).
+    n = 0
+    while thickness[n][1] < 2*np.pi*h/2*0.25:        
+        n += 1
+    thickness_arc = thickness[:n+2]
+    thickness_straight = thickness[n+2:]
+    thickness_straight = np.row_stack((np.array([2*np.pi*h/2*0.25,thickness_straight[0][0],thickness_arc[-1][2]]),thickness_straight))
+    thickness_arc[-1][1] = 2*np.pi*h/2*0.25
+    
+    
+    # Calculating the line integrals
+    sum_I_spar = h/(tsp)
+    sum_I_arc = 0
+    for section in thickness_arc:
+        sum_I_arc += 2*(section[1]-section[0])/section[2]
+    
+    sum_II_spar = h/(tsp)
+    sum_II_tri  = 0    
+    for section in thickness_straight:
+        sum_II_tri += 2*(section[1]-section[0])/section[2]
+    
     
     # Internal torsion as a function of X (x = 0 at hinge 2.)
     def torsion(x):
@@ -65,8 +90,7 @@ def deflection_torsion(steps):
         T_V2   = -V2 * (sc - h/2)                               # Torque caused by V2.
         T_V3   = -V3 * (sc - h/2)                               # Torque caused by V3.
         T_P    = -P_v * sc + P_w * h/2                          # Torque caused by P.
-        T_R    = -R_v * sc + R_w * h/2                          # Torque caused by R.
-    
+        T_R    = -R_v * sc + R_w * h/2                          # Torque caused by R.    
         
         # Checking in what section x lies.
         if 0 < x <= x1:                                                             # section 1
@@ -82,98 +106,85 @@ def deflection_torsion(steps):
         if x3 < x <= la:                                                            # section 6
             return T_aero + T_V1 + T_R + T_V2 + T_P + T_V3
         return 0 
-        
-    # Area of the two cells, counted from LE to TE.
-    Area_I  = 0.5 * np.pi*(h/2)**2
-    Area_II = h*(Ca-h/2)
-    
-    
-    
-    # Splitting the thickness array into the curved part (a) and straight part (b).
-    n = 0
-    while thickness[n][1] < 2*np.pi*h/2*0.25:
-        thickness_a = thickness[:n+2]
-        thickness_b = thickness[n+2:]
-        n += 1
-    thickness_b = np.row_stack((np.array([2*np.pi*h/2*0.25,thickness_b[0][0],thickness_a[-1][2]]),thickness_b))
-    thickness_a[-1][1] = 2*np.pi*h/2*0.25
-    
-    
-    # Calculating the line integrals
-    sum_I_arc = 0
-    sum_I_spar = 0
-    for section in thickness_a:
-        sum_I_arc += 2*(section[1]-section[0])/section[2]
-    sum_I_spar += h/(tsp)
-    
-    sum_II_spar = 0
-    sum_II_tri  = 0
-    
-    for section in thickness_b:
-        sum_II_tri += 2*(section[1]-section[0])/section[2]
-    sum_II_spar += h/(tsp)
     
     # Solving the Torsion formula.
-    y_torsion = [0]
-    y_angle = [0]
-    x = [-x2]
-    n = 2772
-    for xi in np.linspace(-x2,la-x2,steps):
+    y_torsion = []
+    y_angle = []    
+    x,step = np.linspace(-x2,la-x2,steps,retstep = True)
+    for xi in x:
         d_theta_d_z = sympy.Matrix([[2*Area_I,2*Area_II,0,torsion(xi)],
                                     [1/(2*Area_I*G)*sum_I_arc, -1/(2*Area_I*G)*sum_I_spar,-1,0],
                                     [-1/(2*Area_II*G)*sum_II_spar, 1/(2*Area_II*G)*sum_II_tri,-1,0]])
     
         sol = d_theta_d_z.rref()[0][11]
-        x.append(xi)
         y_torsion.append(torsion(xi))
-        y_angle.append(y_angle[-1] + np.rad2deg(float(sol))*((-x2-la+x2)/n))
-    
+        change_of_angle = np.rad2deg(float(sol))*step
+        if y_angle:
+            y_angle.append(y_angle[-1] + change_of_angle)
+        else:
+            y_angle.append(change_of_angle)
+                
     y_torsion = np.array(y_torsion)
     
     i = 0
     while x[i] < 0:
         i+=1
-    zero = x[i]
+    zero = i
     y_angle = np.array(y_angle)
-    y_angle_corrected = y_angle-y_angle[zero]
+    y_angle_corrected = y_angle - y_angle[zero]
     
-    deflection_v_LE = h/2 * np.sin(y_angle_corrected)
-    deflection_w_LE = h/2 * np.cos(y_angle_corrected) - h/2
-    deflection_v_TE = (la-h/2) * np.sin(y_angle_corrected)
-    deflection_w_TE = (la-h/2) * np.cos(y_angle_corrected) - (la-h/2)
+    def_t_v_LE = -h/2 * np.sin(y_angle_corrected)
+    def_t_w_LE = -h/2 * np.cos(y_angle_corrected) - h/2
+    def_t_v_TE = (la-h/2) * np.sin(y_angle_corrected)
+    def_t_w_TE = (la-h/2) * np.cos(y_angle_corrected) - (la-h/2)
+    
+    def test_torsion_function1():
+        margin = 1E-8
+        assert -margin <= torsion(-x2) + torsion(la-x2) <= margin
+        
+    def test_torsion_function2():
+        index = 0
+        while x[index] <= -0.14:
+            index+=1
+        m = y_torsion[index+1]
+        assert m == max(y_torsion)
+        
+    def test_thickness_array():
+        assert thickness[-1][1] == length_upper
+    
+    test_torsion_function1()
+    #test_torsion_function2()
+    test_thickness_array()
+    
+    plot = True
+    
+    if plot:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_torsion, color = 'r', label = 'Torque')
+        ax.set(title = 'Internal torque', xlabel = 'U [m]',ylabel = 'Torque [N/m]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Torsion.pdf')
+        plt.close()
+        
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_angle_corrected, color = 'r', label = 'Angle')
+        ax.set(title = 'Twist angle', xlabel = 'U [m]',ylabel = 'Twist angle [Deg]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Twist.pdf')
+        plt.close()
+        
+    
+    
+    #return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE,y_angle_corrected,y_torsion
 
-    return deflection_v_LE,deflection_w_LE,deflection_v_TE,deflection_w_TE
+    return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE
 
-#y_angle_deg = [np.rad2deg(a) for a in y_angle]    
-#fig1 = plt.figure()
+#def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE,y_angle_corrected,y_torsion = deflection_torsion(2772)
 #
-#ax1 = fig1.add_subplot(121)
-#ax1.plot(x,y_torsion,color = 'r')
-#
-#ax2 = fig1.add_subplot(122)
-#ax2.plot(x,y_angle_deg)
-#
-#fig2 = plt.figure()
-#
-#ax1 = fig2.add_subplot(221)
-#ax1.plot(x,deflection_v_LE)
-#
-#ax1 = fig2.add_subplot(222)
-#ax1.plot(x,deflection_w_LE)
-#
-#ax1 = fig2.add_subplot(223)
-#ax1.plot(x,deflection_v_TE)
-#
-#ax1 = fig2.add_subplot(224)
-#ax1.plot(x,deflection_w_TE)
-
-
-
-
-
-
-
-
-
-
-
+#x = np.linspace(-x2,la-x2,2772)
+#plt.plot(x,y_torsion)
+#plt.plot(x,y_angle_corrected)
