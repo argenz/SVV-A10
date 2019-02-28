@@ -53,23 +53,7 @@ deflection_total_v_TE = def_t_v_TE + def_b_v
 deflection_total_w_LE = def_t_w_LE + def_b_w
 deflection_total_w_TE = def_t_w_TE + def_b_w
 
-fig = plt.figure()
 
-ax1 = fig.add_subplot(221)
-ax1.plot(x,deflection_total_v_LE)
-ax1.set(title = 'LE', xlabel = 'U', ylabel = 'V')
-
-ax2 = fig.add_subplot(222)
-ax2.plot(x,deflection_total_v_TE)
-ax2.set(title = 'TE', xlabel = 'U', ylabel = 'V')
-
-ax3 = fig.add_subplot(223)
-ax3.plot(x,deflection_total_w_LE)
-ax3.set(title = 'LE', xlabel = 'U', ylabel = 'W')
-
-ax4 = fig.add_subplot(224)
-ax4.plot(x,deflection_total_w_TE)
-ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
 
 if True:
     plt.close()    
@@ -107,9 +91,61 @@ print(avg/5)
 
 
 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+TEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name='TE_DY_ALONGX')
+LEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name='LE_DY_ALONGX')
+HINGEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name='HINGE_DY_ALONGX')
+
+TEDY = TEDY.values/1000
+LEDY = LEDY.values/1000
+HINGEDY = HINGEDY.values/1000
+
+#plotting TE DY
+plt.plot(TEDY[:,0],TEDY[:,3])
+plt.ylabel('dY [m]')
+plt.xlabel('x [m]')
+
+input()
+plt.close()
+
+#plotting LE DY
+plt.plot(LEDY[:,0],LEDY[:,3])
+#plt.ylabel('dY [m]')
+#plt.xlabel('x [m]')
+plt.show()
+
+input()
+plt.close()
+
+#plotting HINGE DY
+plt.plot(HINGEDY[:,0],HINGEDY[:,3])
+#plt.ylabel('dY [m]')
+#plt.xlabel('x [m]')
+plt.show()
 
 
 
+fig = plt.figure()
+
+ax1 = fig.add_subplot(221)
+ax1.plot(LEDY[:,0],LEDY[:,3])
+ax1.plot(x,deflection_total_v_LE)
+ax1.set(title = 'LE', xlabel = 'U', ylabel = 'V')
+
+ax2 = fig.add_subplot(222)
+ax2.plot(x,deflection_total_v_TE)
+ax2.plot(TEDY[:,0],TEDY[:,3])
+ax2.set(title = 'TE', xlabel = 'U', ylabel = 'V')
+
+ax3 = fig.add_subplot(223)
+ax3.plot(x,deflection_total_w_LE)
+ax3.set(title = 'LE', xlabel = 'U', ylabel = 'W')
+
+ax4 = fig.add_subplot(224)
+ax4.plot(x,deflection_total_w_TE)
+ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
 
 
 
