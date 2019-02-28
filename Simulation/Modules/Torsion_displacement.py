@@ -132,19 +132,50 @@ def deflection_torsion(steps):
     y_angle = np.array(y_angle)
     y_angle_corrected = y_angle - y_angle[zero]
     
-    def_t_v_LE = h/2 * np.sin(y_angle_corrected)
-    def_t_w_LE = h/2 * np.cos(y_angle_corrected) - h/2
+    def_t_v_LE = -h/2 * np.sin(y_angle_corrected)
+    def_t_w_LE = -h/2 * np.cos(y_angle_corrected) - h/2
     def_t_v_TE = (la-h/2) * np.sin(y_angle_corrected)
     def_t_w_TE = (la-h/2) * np.cos(y_angle_corrected) - (la-h/2)
     
-    def test_torsion_function():
-        margin = 1E-5
+    def test_torsion_function1():
+        margin = 1E-8
         assert -margin <= torsion(-x2) + torsion(la-x2) <= margin
+        
+    def test_torsion_function2():
+        index = 0
+        while x[index] <= -0.14:
+            index+=1
+        m = y_torsion[index+1]
+        assert m == max(y_torsion)
+        
+    def test_thickness_array():
+        assert thickness[-1][1] == length_upper
     
-    test_torsion_function()
+    test_torsion_function1()
+    test_torsion_function2()
+    test_thickness_array()
     
+    plot = True
     
-    
+    if plot:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_torsion, color = 'r', label = 'Torque')
+        ax.set(title = 'Internal torque', xlabel = 'U [m]',ylabel = 'Torque [N/m]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Torsion.pdf')
+        plt.close()
+        
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_angle_corrected, color = 'r', label = 'Angle')
+        ax.set(title = 'Twist angle', xlabel = 'U [m]',ylabel = 'Twist angle [Deg]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Twist.pdf')
+        plt.close()
+        
     
     
     #return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE,y_angle_corrected,y_torsion

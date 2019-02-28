@@ -72,5 +72,42 @@ ax4 = fig.add_subplot(224)
 ax4.plot(x,deflection_total_w_TE)
 ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
 
+if False:
+    plt.close()    
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
+    ax.plot(x,def_b_v, color = 'r', label = 'Deformed aileron')
+    ax.plot([x[0],x[-1]],[0,0],color = 'grey', label = 'Undeformed aileron')
+    ax.set(title = 'Deformation due to bending', xlabel = 'U [m]',ylabel = 'V [m]')
+    plt.gca().invert_xaxis()
+    ax.legend()
+    fig.savefig('./Output/Bending_u,v.pdf')
+    plt.close()
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(x,def_b_w, color = 'r', label = 'Deformed aileron')
+    ax.plot([x[0],x[-1]],[0,0],color = 'grey', label = 'Undeformed aileron')
+    ax.set(title = 'Deformation due to bending', xlabel = 'U [m]',ylabel = 'W [m]')
+    plt.gca().invert_xaxis()
+    ax.legend()
+    fig.savefig('./Output/Bending_u,w.pdf')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
