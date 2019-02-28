@@ -19,6 +19,7 @@ from sympy import *
 exec(open("./Data.txt").read())       
 
 def deflection_torsion(steps):
+#    theta = 0
     theta_rad = np.deg2rad(theta)
     # Calculation of reaction forces.
     Iyy,Izz = get_Iyy(), get_Izz()
@@ -52,7 +53,7 @@ def deflection_torsion(steps):
             thickness[i] = np.array([thickness[i-1][1],thickness[i-1][1] + wst/2 ,tst + tsk])
     
     # Obtaining the location of the shear center. (measured from LE.)
-    sc = h/2 - get_shear_center(h,Ca,Izz,tsk)
+    sc = h/2 - get_shear_center(h,Ca,Izz,tsk,tsp)
     
     # Area of the two cells, counted from LE to TE.
     Area_I  = 0.5 * np.pi*(h/2)**2

@@ -12,11 +12,12 @@ import scipy.integrate as integrate
 #Values in meters
 h=0.225
 c=0.547
-Izz=1.3970016921429686e-05
+Izz=0.00001397002
 t=0.0011
 
+ts=0.0029
 
-def get_shear_center(h,c,Izz,t):
+def get_shear_center(h,c,Izz,t,ts):
     
     #Qb determination
     r=h/2
@@ -33,7 +34,7 @@ def get_shear_center(h,c,Izz,t):
     p_cell_2=h+2*diagonal
 
     #qb integrated around cell 1
-    qb12int=integrate.dblquad(lambda s, s1: 1/Izz*t*s1, 0, r, lambda s:0, lambda s: s)
+    qb12int=integrate.dblquad(lambda s, s1: 1/Izz*ts*s1, 0, r, lambda s:0, lambda s: s)
     qb23int=integrate.dblquad(lambda s, s2: 1/Izz*t*r*sin(pi/2-s2/r), 0, r*pi/2, lambda s:0, lambda s: s)
     qbint1=2*qb12int[0]+2*qb23int[0]
 
@@ -61,5 +62,5 @@ def get_shear_center(h,c,Izz,t):
 
 
     return(shear_cent)
-#
-print(get_shear_center(h,c,Izz,t))
+
+#print (get_shear_center(h,c,Izz,t, ts))

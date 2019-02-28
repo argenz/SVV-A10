@@ -31,7 +31,6 @@ Iyy = get_Iyy()
 Iyz = get_Iyz()
 
 # Obtaining the location of the shear center.
-shear_center = get_shear_center(Izz,tsk,h,Ca)
 
 # Obtaining the reaction forces and their transform. forces in internal coordinatesystem!!    
 U2,V1,V2,V3,W1,W2,W3,Q_v,Q_w,R_v,R_w,P_v,P_w,YA,YB,ZA,ZB = reaction_forces(Iyy,Izz)
@@ -89,12 +88,21 @@ if True:
     ax = fig.add_subplot(111)
     ax.plot(x,def_b_w, color = 'r', label = 'Deformed aileron')
     ax.plot([x[0],x[-1]],[0,0],color = 'grey', label = 'Undeformed aileron')
+    
     ax.set(title = 'Deformation due to bending', xlabel = 'U [m]',ylabel = 'W [m]')
     plt.gca().invert_xaxis()
     ax.legend()
     fig.savefig('./Output/Bending_u,w.pdf')
 
+avg = 0
+avg += abs(100-(-11.91112471/(W1/1000)*100))	
+avg += abs(100-(26.57759392/(V1/1000)*100))
+#avg += abs(100-(0.191719995/(W2/1000)*100))	
+avg += abs(100-(-36.37587519/(V2/1000)*100))
+avg += abs(100-(9.013615578/(W3/1000)*100))	
+avg += abs(100-(22.35091127/(V3/1000)*100))
 
+print(avg/5)
 
 
 
