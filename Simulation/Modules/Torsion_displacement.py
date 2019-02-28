@@ -155,6 +155,27 @@ def deflection_torsion(steps):
     test_torsion_function2()
     test_thickness_array()
     
+    plot = True
+    
+    if plot:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_torsion, color = 'r', label = 'Torque')
+        ax.set(title = 'Internal torque', xlabel = 'U [m]',ylabel = 'Torque [N/m]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Torsion.pdf')
+        plt.close()
+        
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x,y_angle_corrected, color = 'r', label = 'Angle')
+        ax.set(title = 'Twist angle', xlabel = 'U [m]',ylabel = 'Twist angle [Deg]')
+        plt.gca().invert_xaxis()
+        ax.legend()
+        fig.savefig('./Output/Twist.pdf')
+        plt.close()
+        
     
     
     #return def_t_v_LE,def_t_w_LE,def_t_v_TE,def_t_w_TE,y_angle_corrected,y_torsion
