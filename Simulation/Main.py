@@ -14,7 +14,7 @@ from Modules.centroid import *
 from Modules.Tools import *
 from Modules.MOI import *
 from Modules.shearcenter_pos import *
-from Modules.findanglehinge2 import *
+from Modules.Finddeflectionbending_update2 import *
 from Modules.deflectiondistributedload import *
 from Modules.deflectionpointload import *
 from Modules.FinalShearFlow import *
