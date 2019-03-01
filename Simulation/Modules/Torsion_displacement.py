@@ -116,9 +116,9 @@ def deflection_torsion(steps):
                                     [1/(2*Area_I*G)*sum_I_arc, -1/(2*Area_I*G)*sum_I_spar,-1,0],
                                     [-1/(2*Area_II*G)*sum_II_spar, 1/(2*Area_II*G)*sum_II_tri,-1,0]])
     
-        sol = d_theta_d_z.rref()[0][11]
+        dtdz = d_theta_d_z.rref()[0][11]
         y_torsion.append(torsion(xi))
-        change_of_angle = np.rad2deg(float(sol))*step
+        change_of_angle = float(dtdz)*step
         if y_angle:
             y_angle.append(y_angle[-1] + change_of_angle)
         else:
@@ -170,7 +170,7 @@ def deflection_torsion(steps):
         
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(x,y_angle_corrected, color = 'r', label = 'Angle')
+        ax.plot(x,np.rad2deg(y_angle_corrected), color = 'r', label = 'Angle')
         ax.set(title = 'Twist angle', xlabel = 'U [m]',ylabel = 'Twist angle [Deg]')
         plt.gca().invert_xaxis()
         ax.legend()
