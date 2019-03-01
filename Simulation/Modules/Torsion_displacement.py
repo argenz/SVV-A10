@@ -134,7 +134,7 @@ def deflection_torsion(steps):
     y_angle_corrected = y_angle - y_angle[zero]
     
     def_t_v_LE = -h/2 * np.sin(y_angle_corrected)
-    def_t_w_LE = -h/2 * np.cos(y_angle_corrected) - h/2
+    def_t_w_LE = h/2 * np.cos(y_angle_corrected) - h/2
     def_t_v_TE = (Ca-h/2) * np.sin(y_angle_corrected)
     def_t_w_TE = (Ca-h/2) * np.cos(y_angle_corrected) - (Ca-h/2)
     

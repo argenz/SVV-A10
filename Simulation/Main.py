@@ -59,50 +59,21 @@ deflection_total_w_TE = def_t_w_TE + def_b_w
 # Validation data.
 TEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=0)         #X,Y,Z,dY values of columns
 LEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=1)
-#HINGEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=2)
 
 TEDY = TEDY.values/1000                                                     #to get everything in meters
 LEDY = LEDY.values/1000
-#HINGEDY = HINGEDY.values/1000
 
 TEDY[:,0] = TEDY[:,0]-x2                                                    #to match x-coordinates to ours
 TEDY[:,3] = TEDY[:,3]-(Ca-h/2)*np.sin(np.deg2rad(theta))                    #to fix the angle!                                             
 LEDY[:,0] = LEDY[:,0]-x2
 LEDY[:,3] = LEDY[:,3]+h/2*np.sin(np.deg2rad(theta)) 
-#HINGEDY[:,0] = HINGEDY[:,0]-x2
 
-# Validation data.
 TEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=0)                     #X,Y,Z,dZ values of columns
 LEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=1)
-#HINGEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=3)
-
 TEDZ = TEDZ.values/1000                                                     #to get everything in meters
 LEDZ = LEDZ.values/1000
-#HINGEDZ = HINGEDZ.values/1000
-
-TEDZ[:,0] = TEDZ[:,0]-x2                                                     #to match x-coordinates to ours
-#TEDZ[:,3] = TEDZ[:,3]-((Ca-h/2)-(Ca-h/2)*np.cos(np.deg2rad(theta)))
-LEDZ[:,0] = LEDZ[:,0]-x2
-#LEDZ[:,3] = LEDZ[:,3]+((h/2)-(h/2)*np.cos(np.deg2rad(theta)))
-#HINGEDZ[:,0] = HINGEDZ[:,0]-x2
-
-##plotting TE DZ
-#plt.plot(TEDZ[:,0],TEDZ[:,3])
-#plt.ylabel('dZ [m]')
-#plt.xlabel('x [m]')
-#plt.show()
-#
-##plotting LE DZ
-#plt.plot(LEDZ[:,0],LEDZ[:,3])
-#plt.ylabel('dZ [m]')
-#plt.xlabel('x [m]')
-#plt.show()
-#
-##plotting HINGE DZ
-#plt.plot(HINGEDZ[:,0],HINGEDZ[:,3])
-#plt.ylabel('dZ [m]')
-#plt.xlabel('x [m]')
-#plt.show()
+TEDZ[:,0] = TEDZ[:,0]-x2      
+LEDZ[:,0] = LEDZ[:,0]-x2                                                  #to match x-coordinates to ours
 
 
 
@@ -119,7 +90,7 @@ if True:
     ax = fig0.add_subplot(111)    
     ax.plot(x,def_b_v, color = 'r', label = 'Numerical solution')
     ax.plot([x[0],x[-1]],[0,0],color = 'grey', label = 'Undeformed aileron')
-    ax.plot(HINGEDY[:,0],HINGEDY[:,3], color = 'blue', label = 'Validation data')
+    #ax.plot(HINGEDY[:,0],HINGEDY[:,3], color = 'blue', label = 'Validation data')
     #ax.plot(HINGEDY[:,0][::-1],HINGEDY[:,3])
     ax.scatter([(x1-x2),0,(x3-x2)],[d1_v,0,d3_v],label = 'Hinge deflections')
     ax.set(title = 'Deformation due to bending', xlabel = 'U [m]',ylabel = 'V [m]')
