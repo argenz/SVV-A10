@@ -10,7 +10,6 @@ This function calculated the forces on the aileron in the internal coordinate sy
 import numpy as np
 import sympy
 from Tools import *
-#from Modules.MOI import *
 from Modules.Tools import *
 from Modules.MOI import *
 exec(open("./Data.txt").read())
