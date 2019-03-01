@@ -57,17 +57,54 @@ deflection_total_w_LE = def_t_w_LE + def_b_w
 deflection_total_w_TE = def_t_w_TE + def_b_w
 
 # Validation data.
-TEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheetname=0)         #X,Y,Z,dY values of columns
-LEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheetname=1)
-HINGEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheetname=2)
+TEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=0)         #X,Y,Z,dY values of columns
+LEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=1)
+#HINGEDY = pd.read_excel('validation_dy_te_le_hinge.xlsx', sheet_name=2)
 
 TEDY = TEDY.values/1000                                                     #to get everything in meters
 LEDY = LEDY.values/1000
-HINGEDY = HINGEDY.values/1000
+#HINGEDY = HINGEDY.values/1000
 
-TEDY[:,0] = TEDY[:,0]-x2                                                  #to match x-coordinates to ours
+TEDY[:,0] = TEDY[:,0]-x2                                                    #to match x-coordinates to ours
+TEDY[:,3] = TEDY[:,3]-(Ca-h/2)*np.sin(np.deg2rad(theta))                    #to fix the angle!                                             
 LEDY[:,0] = LEDY[:,0]-x2
-HINGEDY[:,0] = HINGEDY[:,0]-x2
+LEDY[:,3] = LEDY[:,3]+h/2*np.sin(np.deg2rad(theta)) 
+#HINGEDY[:,0] = HINGEDY[:,0]-x2
+
+# Validation data.
+TEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=0)                     #X,Y,Z,dZ values of columns
+LEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=1)
+#HINGEDZ = pd.read_excel('validation_dz.xlsx', sheet_name=3)
+
+TEDZ = TEDZ.values/1000                                                     #to get everything in meters
+LEDZ = LEDZ.values/1000
+#HINGEDZ = HINGEDZ.values/1000
+
+TEDZ[:,0] = TEDZ[:,0]-x2                                                     #to match x-coordinates to ours
+#TEDZ[:,3] = TEDZ[:,3]-((Ca-h/2)-(Ca-h/2)*np.cos(np.deg2rad(theta)))
+LEDZ[:,0] = LEDZ[:,0]-x2
+#LEDZ[:,3] = LEDZ[:,3]+((h/2)-(h/2)*np.cos(np.deg2rad(theta)))
+#HINGEDZ[:,0] = HINGEDZ[:,0]-x2
+
+##plotting TE DZ
+#plt.plot(TEDZ[:,0],TEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+#
+##plotting LE DZ
+#plt.plot(LEDZ[:,0],LEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+#
+##plotting HINGE DZ
+#plt.plot(HINGEDZ[:,0],HINGEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+
+
 
 # Deflections in local rf.
 d1_w = -d1 * np.sin(theta_rad)
@@ -105,7 +142,6 @@ if True:
     ax1 = fig2.add_subplot(221)
     ax1.plot(x,deflection_total_v_LE, label = 'Numerical solution')
     ax1.plot(LEDY[:,0],LEDY[:,3], label = 'Validation data')
-    #ax1.plot(HINGEDY[:,0],HINGEDY[:,3])
     ax1.set(title = 'LE', ylabel = 'V [m]')
     
     ax2 = fig2.add_subplot(222)
@@ -115,11 +151,14 @@ if True:
     
     ax3 = fig2.add_subplot(223)
     ax3.plot(x,deflection_total_w_LE, label = 'Numerical solution')
+    ax3.plot(LEDZ[:,0],LEDZ[:,3])
     ax3.set(xlabel = 'U [m]', ylabel = 'W [m]')
     
     ax4 = fig2.add_subplot(224)
     ax4.plot(x,deflection_total_w_TE, label = 'Numerical solution')
-    ax4.set(xlabel = 'U [m]')
+    ax4.plot(TEDZ[:,0],TEDZ[:,3])
+    ax4.set(xlabel = 'U [m]')    
+    
     fig2.savefig('./Output/deflections_LE_TE.pdf')
 
 

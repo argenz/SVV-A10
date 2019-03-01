@@ -11,6 +11,8 @@ from Modules.centroid import centroid
 #from scipy.integrate import quad
 
 ################### Area Moment of Inertia Tools ###########################
+#Data
+
 exec(open("./Data.txt").read())
 
 #to find the area moments of inertia we decompose the cross section in 3 parts:
@@ -24,6 +26,7 @@ d_cr = (a_r/2)*sin(beta_r)                  #distance from rectangle's centroid 
 r = h/2
 
 ctrd_z = centroid()[2]
+
 
 #centroid of stiffeners
 cstr= (((hst-tst)*tst)*hst/2+(wst*tst)*tst/2)/(((hst-tst)*tst)+wst*tst)
@@ -49,26 +52,6 @@ Iyy_sp = h*tsp**3/12 + A_sp*(ctrd_z)**2
 
 
 
-############ AREA MOMENTS OF INERTIA IN ZZ
-#Izz_r1, moment of the first rectangle including steiner
-#Izz_r2, moment of second rectangle including steiner
-
-def get_Izz():
-    Izz_r1 = tsk*(a_r**3)*(sin(beta_r)**2)/12 + a_r*tsk*(d_cr)**2
-    Izz_r2 = Izz_r1                             #because only parameters changing sign are squared so no difference 
-    Izz_sm = r**3*tsk*pi/2                      #no steiner because symmetry with respect to z
-    Izz = Izz_r1 + Izz_r2 + Izz_sm + Izz_sp
-
-    for i in range(len(strcoor)):
-        Izz = Izz + Izz_st + A_st*((strcoor[i][1]) - centr_st_ycomp)**2
-        
-    return float(Izz)
-
-############ AREA MOMENTS OF INERTIA IN YY
-    
-ctrd_r_z = -(Ca - r - a_r/2*cos(beta_r))   #projection of z location of rectangle's centroid on z axis
-                                           #minus to respect coordinate system
-
 #Calculating Centroid of thin walled semicircle
 R1 = r
 R2 = r - tsk
@@ -82,11 +65,31 @@ A2 = - pi*(R2**2)/2
 cntrd_sm = ((A1*z1)+(A2*z2))/(A1+A2)
 
 
+############ AREA MOMENTS OF INERTIA IN ZZ
+#Izz_r1, moment of the first rectangle including steiner
+#Izz_r2, moment of second rectangle including steiner
+
+def get_Izz():
+    Izz_r1 = tsk*(a_r**3)*(sin(beta_r)**2)/12 + a_r*tsk*(d_cr)**2
+    Izz_r2 = Izz_r1                             #because only parameters changing sign are squared so no difference 
+    Izz_sm = r**3*tsk*pi/2  - (A1+A2)*(ctrd_z)**2              #no steiner because symmetry with respect to z
+    Izz = Izz_r1 + Izz_r2 + Izz_sm + Izz_sp
+
+    for i in range(len(strcoor)):
+        Izz = Izz + Izz_st + A_st*((strcoor[i][1]) - centr_st_ycomp)**2
+        
+    return float(Izz)
+
+############ AREA MOMENTS OF INERTIA IN YY
+    
+ctrd_r_z = -(Ca - r - a_r/2*cos(beta_r))   #projection of z location of rectangle's centroid on z axis
+                                           #minus to respect coordinate system
+
 def get_Iyy():
 
     Iyy_r1 = tsk*(a_r**3)*(cos(beta_r)**2)/12 + a_r*tsk*(ctrd_r_z-ctrd_z)**2
     Iyy_r2 = Iyy_r1                            #Only thing varying is beta and it's cos so same value for negative angle
-    Iyy_sm = r**3*tsk*pi/2 + (A1+A2)*(cntrd_sm - ctrd_z)**2
+    Iyy_sm = r**3*tsk*pi/2 + (A1+A2)*(cntrd_sm-ctrd_z)**2
     Iyy = Iyy_r1 + Iyy_r2 + Iyy_sm + Iyy_sp
     
     for i in range(len(strcoor)):
