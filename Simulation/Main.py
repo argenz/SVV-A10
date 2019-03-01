@@ -101,31 +101,31 @@ if True:
     fig1.savefig('./Output/Bending_u,w.pdf')
 
 
-    fig2 = plt.figure()    
+    fig2 = plt.figure(figsize=(12,7))    
     ax1 = fig2.add_subplot(221)
-    ax1.plot(LEDY[:,0],LEDY[:,3])
-    ax1.plot(x,deflection_total_v_LE)
+    ax1.plot(x,deflection_total_v_LE, label = 'Numerical solution')
+    ax1.plot(LEDY[:,0],LEDY[:,3], label = 'Validation data')
     #ax1.plot(HINGEDY[:,0],HINGEDY[:,3])
-    ax1.set(title = 'LE', xlabel = 'U', ylabel = 'V')
+    ax1.set(title = 'LE', ylabel = 'V [m]')
     
     ax2 = fig2.add_subplot(222)
-    ax2.plot(x,deflection_total_v_TE)
+    ax2.plot(x,deflection_total_v_TE, label = 'Numerical solution')
     ax2.plot(TEDY[:,0],TEDY[:,3])
-    ax2.set(title = 'TE', xlabel = 'U', ylabel = 'V')
+    ax2.set(title = 'TE')
     
     ax3 = fig2.add_subplot(223)
-    ax3.plot(x,deflection_total_w_LE)
-    ax3.set(title = 'LE', xlabel = 'U', ylabel = 'W')
+    ax3.plot(x,deflection_total_w_LE, label = 'Numerical solution')
+    ax3.set(xlabel = 'U [m]', ylabel = 'W [m]')
     
     ax4 = fig2.add_subplot(224)
-    ax4.plot(x,deflection_total_w_TE)
-    ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
+    ax4.plot(x,deflection_total_w_TE, label = 'Numerical solution')
+    ax4.set(xlabel = 'U [m]')
     fig2.savefig('./Output/deflections_LE_TE.pdf')
 
 
-
-
-
+a = list(np.array(deflection_total_v_TE,dtype = 'f8'))
+print(max(a),min(a))
+b = x[a.index(max(a))]
 
 
 
