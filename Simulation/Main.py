@@ -65,9 +65,46 @@ TEDY = TEDY.values/1000                                                     #to 
 LEDY = LEDY.values/1000
 HINGEDY = HINGEDY.values/1000
 
-TEDY[:,0] = TEDY[:,0]-x2                                                  #to match x-coordinates to ours
+TEDY[:,0] = TEDY[:,0]-x2                                                    #to match x-coordinates to ours
+TEDY[:,3] = TEDY[:,3]-(Ca-h/2)*np.sin(np.deg2rad(theta))                    #to fix the angle!                                             
 LEDY[:,0] = LEDY[:,0]-x2
+LEDY[:,3] = LEDY[:,3]+h/2*np.sin(np.deg2rad(theta)) 
 HINGEDY[:,0] = HINGEDY[:,0]-x2
+
+# Validation data.
+TEDZ = pd.read_excel('validation_dz.xlsx', sheetname=0)                     #X,Y,Z,dZ values of columns
+LEDZ = pd.read_excel('validation_dz.xlsx', sheetname=1)
+HINGEDZ = pd.read_excel('validation_dz.xlsx', sheetname=3)
+
+TEDZ = TEDZ.values/1000                                                     #to get everything in meters
+LEDZ = LEDZ.values/1000
+HINGEDZ = HINGEDZ.values/1000
+
+TEDZ[:,0] = TEDZ[:,0]-x2                                                     #to match x-coordinates to ours
+#TEDZ[:,3] = TEDZ[:,3]-((Ca-h/2)-(Ca-h/2)*np.cos(np.deg2rad(theta)))
+LEDZ[:,0] = LEDZ[:,0]-x2
+#LEDZ[:,3] = LEDZ[:,3]+((h/2)-(h/2)*np.cos(np.deg2rad(theta)))
+HINGEDZ[:,0] = HINGEDZ[:,0]-x2
+
+##plotting TE DZ
+#plt.plot(TEDZ[:,0],TEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+#
+##plotting LE DZ
+#plt.plot(LEDZ[:,0],LEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+#
+##plotting HINGE DZ
+#plt.plot(HINGEDZ[:,0],HINGEDZ[:,3])
+#plt.ylabel('dZ [m]')
+#plt.xlabel('x [m]')
+#plt.show()
+
+
 
 # Deflections in local rf.
 d1_w = -d1 * np.sin(theta_rad)
@@ -114,12 +151,23 @@ if True:
     ax2.set(title = 'TE')
     
     ax3 = fig2.add_subplot(223)
+<<<<<<< HEAD
+    ax3.plot(x,deflection_total_w_LE)
+    ax3.plot(LEDZ[:,0],LEDZ[:,3])
+    ax3.set(title = 'LE', xlabel = 'U', ylabel = 'W')
+    
+    ax4 = fig2.add_subplot(224)
+    ax4.plot(x,deflection_total_w_TE)
+    ax4.plot(TEDZ[:,0],TEDZ[:,3])
+    ax4.set(title = 'TE', xlabel = 'U', ylabel = 'W')
+=======
     ax3.plot(x,deflection_total_w_LE, label = 'Numerical solution')
     ax3.set(xlabel = 'U [m]', ylabel = 'W [m]')
     
     ax4 = fig2.add_subplot(224)
     ax4.plot(x,deflection_total_w_TE, label = 'Numerical solution')
     ax4.set(xlabel = 'U [m]')
+>>>>>>> 8faa97e026294a49a901c0021bc9df6d9189c6ee
     fig2.savefig('./Output/deflections_LE_TE.pdf')
 
 
